@@ -263,7 +263,7 @@
 
   <section class="stagger" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px">
     <sc-for list="{{ denominations }}" as="d" hint-placeholder-count="7">
-      <dc-import name="DenomCardV7" denom="{{ d }}" count="{{ d.count }}" on-change="{{ d.onChange }}" hint-size="100%,280px"></dc-import>
+      <dc-import name="DenomCardV5" denom="{{ d }}" count="{{ d.count }}" on-change="{{ d.onChange }}" hint-size="100%,280px"></dc-import>
     </sc-for>
   </section>
 
@@ -355,14 +355,13 @@ class Component extends DCLogic {
   THEME_KEY = 'iqd-calc-theme-v7';
 
   DENOMS = [
-    // Color harmony — cool → warm gradient as value increases
-    { value: 250,    name: '250',    label: 'مئتان وخمسون',     base: '#00C7BE', dark: '#00897B' }, // mint
-    { value: 500,    name: '500',    label: 'خمسمئة',           base: '#30B0C7', dark: '#0277BD' }, // teal
-    { value: 1000,   name: '1,000',  label: 'ألف',               base: '#007AFF', dark: '#0040DD' }, // blue
-    { value: 5000,   name: '5,000',  label: 'خمسة آلاف',         base: '#5856D6', dark: '#3F3DB3' }, // indigo
-    { value: 10000,  name: '10,000', label: 'عشرة آلاف',         base: '#AF52DE', dark: '#7B2EAD' }, // purple
-    { value: 25000,  name: '25,000', label: 'خمسة وعشرون ألف',   base: '#FF9500', dark: '#D97700' }, // orange
-    { value: 50000,  name: '50,000', label: 'خمسون ألف',         base: '#FF3B30', dark: '#C8201A' }, // red
+    { value: 250,    name: '250',    label: 'مئتان وخمسون',     base: '#00C7BE', dark: '#00897B', tint: '#e6faf9' },
+    { value: 500,    name: '500',    label: 'خمسمئة',           base: '#30B0C7', dark: '#0277BD', tint: '#e8f7fb' },
+    { value: 1000,   name: '1,000',  label: 'ألف',               base: '#007AFF', dark: '#0040DD', tint: '#e8f2ff' },
+    { value: 5000,   name: '5,000',  label: 'خمسة آلاف',         base: '#5856D6', dark: '#3F3DB3', tint: '#ededfc' },
+    { value: 10000,  name: '10,000', label: 'عشرة آلاف',         base: '#AF52DE', dark: '#7B2EAD', tint: '#f7edfc' },
+    { value: 25000,  name: '25,000', label: 'خمسة وعشرون ألف',   base: '#FF9500', dark: '#D97700', tint: '#fff5e6' },
+    { value: 50000,  name: '50,000', label: 'خمسون ألف',         base: '#FF3B30', dark: '#C8201A', tint: '#ffeceb' },
   ];
 
   state = { counts: {}, lastUpdatedAt: null, theme: 'auto', systemDark: false };
@@ -473,7 +472,12 @@ class Component extends DCLogic {
   renderVals() {
     const counts = this.state.counts;
     const denominations = this.DENOMS.map(d => ({
-      ...d,
+      value: d.value,
+      name: d.name,
+      label: d.label,
+      color: d.base,
+      tint: d.tint,
+      ink: d.dark,
       count: counts[d.value] || 0,
       onChange: (n) => this.setCount(d.value, n),
     }));
