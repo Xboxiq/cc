@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="position:relative;background:{{ rowBg }};border:1px solid {{ rowBorder }};border-radius:14px;padding:20px 24px;transition:all .25s cubic-bezier(.4,0,.2,1);overflow:hidden;color:{{ rowInk }}" style-hover="border-color:{{ rowHoverBorder }};transform:translateY(-1px);box-shadow:0 8px 24px -12px rgba(28,27,25,.18)">
+
+  <!-- Noir treatment for 50,000 -->
+  <sc-if value="{{ isNoir }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:radial-gradient(circle at 100% 0%,rgba(184,153,104,.18),transparent 50%),radial-gradient(circle at 0% 100%,rgba(184,153,104,.1),transparent 50%);pointer-events:none"></div>
+    <div style="position:absolute;top:0;right:0;left:0;height:1px;background:linear-gradient(90deg,transparent,#B89968,transparent);pointer-events:none"></div>
+  </sc-if>
+
+  <div style="position:relative;display:grid;grid-template-columns:auto 1fr auto auto;gap:24px;align-items:center">
+
+    <!-- LEFT: monogram + name -->
+    <div style="display:flex;align-items:center;gap:14px;min-width:200px">
+      <!-- circular stamp -->
+      <div style="position:relative;width:52px;height:52px;border-radius:50%;border:1px solid {{ stampBorder }};display:grid;place-items:center;background:{{ stampBg }};flex-shrink:0">
+        <span style="position:absolute;inset:-4px;border-radius:50%;border:.5px solid {{ stampRing }}"></span>
+        <span class="num" style="font-size:13px;font-weight:700;color:{{ accent }};letter-spacing:-.03em;line-height:1">{{ shortName }}</span>
+      </div>
+      <div>
+        <div style="display:flex;align-items:baseline;gap:6px">
+          <span class="serif num" style="font-size:30px;font-weight:400;color:{{ rowInk }};letter-spacing:-.02em;line-height:1">{{ denomName }}</span>
+          <span class="ar" style="font-size:13px;color:{{ rowInkSoft }};font-weight:500">د.ع</span>
+        </div>
+        <div class="ar" style="font-size:12px;color:{{ rowInkSoft }};font-weight:500;margin-top:4px;letter-spacing:.02em">{{ denomLabel }}</div>
+      </div>
+    </div>
+
+    <!-- MIDDLE: visual banknote stack -->
+    <div style="position:relative;min-height:48px;display:flex;align-items:center;padding:0 8px">
+      <sc-if value="{{ isActive }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:14px;width:100%">
+          <!-- The stack -->
+          <div style="position:relative;flex:1;height:48px;display:flex;align-items:center;overflow:visible">
+            <svg width="100%" height="48" viewBox="0 0 360 48" preserveAspectRatio="none" style="overflow:visible">
+              <sc-for list="{{ stackBills }}" as="bill" hint-placeholder-count="10">
+                <rect x="{{ bill.x }}" y="{{ bill.y }}" width="40" height="22" rx="2" fill="{{ bill.fill }}" stroke="{{ bill.stroke }}" stroke-width=".5" opacity="{{ bill.opacity }}" transform="rotate({{ bill.rot }} {{ bill.cx }} {{ bill.cy }})" style="transition:all .3s cubic-bezier(.34,1.56,.64,1)"></rect>
+              </sc-for>
+            </svg>
+          </div>
+          <!-- count badge -->
+          <div class="num" style="display:inline-flex;align-items:baseline;gap:4px;flex-shrink:0">
+            <span style="font-size:11px;color:{{ rowInkSoft }};font-weight:500">×</span>
+            <span class="serif" style="font-size:24px;font-weight:400;color:{{ rowInk }};line-height:1">{{ count }}</span>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isInactive }}" hint-placeholder-val="{{ true }}">
+        <div class="ar serif" style="font-size:14px;color:{{ rowInkSoft }};font-style:italic;opacity:.6">— لم تُسجَّل في الدفتر بعد —</div>
+      </sc-if>
+    </div>
+
+    <!-- STEPPER -->
+    <div style="display:flex;align-items:stretch;border:1px solid {{ stepperBorder }};border-radius:10px;background:{{ stepperBg }};height:38px;overflow:hidden">
+      <button onClick="{{ onDec }}" onMouseDown="{{ onHoldDec }}" onMouseUp="{{ onHoldEnd }}" onMouseLeave="{{ onHoldEnd }}" title="اضغط مطولاً للنقص بسرعة" style="width:40px;display:grid;place-items:center;color:{{ stepperInk }};transition:background .12s" style-hover="background:{{ stepperHover }}" style-active="background:{{ stepperPress }}">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+      <div style="width:1px;background:{{ stepperBorder }}"></div>
+      <input type="number" min="0" max="99999" value="{{ count }}" onInput="{{ onInput }}" onFocus="{{ onFocus }}" placeholder="0" class="num serif" style="width:56px;height:100%;border:none;background:transparent;text-align:center;font-size:20px;font-weight:400;color:{{ rowInk }};outline:none;padding:0;font-family:'Instrument Serif',Georgia,serif">
+      <div style="width:1px;background:{{ stepperBorder }}"></div>
+      <button onClick="{{ onInc }}" onMouseDown="{{ onHoldInc }}" onMouseUp="{{ onHoldEnd }}" onMouseLeave="{{ onHoldEnd }}" title="اضغط مطولاً للزيادة بسرعة" style="width:40px;display:grid;place-items:center;color:{{ accent }};transition:background .12s" style-hover="background:{{ accentHover }}" style-active="background:{{ accentPress }}">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- TRAILING: subtotal -->
+    <div style="text-align:left;min-width:130px">
+      <div class="eyebrow" style="color:{{ rowInkSoft }}">subtotal</div>
+      <div style="display:flex;align-items:baseline;gap:5px;justify-content:flex-end;margin-top:2px">
+        <span class="serif num" style="font-size:26px;font-weight:400;color:{{ subtotalColor }};letter-spacing:-.02em;line-height:1">{{ subtotalDisplay }}</span>
+        <span class="ar" style="font-size:11px;font-weight:500;color:{{ rowInkSoft }}">د.ع</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick chips row (subtle, only when active or hovered) -->
+  <div style="margin-top:14px;padding-top:14px;border-top:1px dashed {{ rowDivider }};display:flex;align-items:center;justify-content:space-between;gap:8px">
+    <div class="eyebrow" style="color:{{ rowInkSoft }}">إضافة سريعة</div>
+    <div style="display:flex;gap:6px">
+      <sc-for list="{{ quickAdds }}" as="q" hint-placeholder-count="5">
+        <button onClick="{{ q.onClick }}" class="num" style="padding:5px 12px;border-radius:999px;background:transparent;color:{{ rowInkSoft }};font-size:12px;font-weight:600;transition:all .15s;border:1px solid {{ chipBorder }}" style-hover="background:{{ accentHover }};color:{{ accent }};border-color:{{ accentBorder }}">+{{ q.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 1100, &quot;height&quot;: 140},
+  &quot;denom&quot;: {&quot;editor&quot;: null, &quot;default&quot;: {&quot;value&quot;: 1000, &quot;name&quot;: &quot;1,000&quot;, &quot;label&quot;: &quot;ألف&quot;, &quot;color&quot;: &quot;#354F7E&quot;, &quot;tone&quot;: &quot;navy&quot;}, &quot;tsType&quot;: &quot;{value:number,name:string,label:string,color:string,tone:string}&quot;},
+  &quot;count&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 12, &quot;tsType&quot;: &quot;number&quot;},
+  &quot;onChange&quot;: {&quot;editor&quot;: null, &quot;default&quot;: null, &quot;tsType&quot;: &quot;(n:number)=&gt;void&quot;}
+}">
+class Component extends DCLogic {
+  fmt(n){ return Number(n).toLocaleString('en-US'); }
+  hexA(hex, alpha) {
+    const c = hex.replace('#','');
+    const r = parseInt(c.substring(0,2),16);
+    const g = parseInt(c.substring(2,4),16);
+    const b = parseInt(c.substring(4,6),16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+  lighten(hex, amt) {
+    const c = hex.replace('#','');
+    const r = parseInt(c.substring(0,2),16);
+    const g = parseInt(c.substring(2,4),16);
+    const b = parseInt(c.substring(4,6),16);
+    const mix = (ch) => Math.round(ch + (255 - ch) * amt);
+    return `rgb(${mix(r)},${mix(g)},${mix(b)})`;
+  }
+  shortName(v) {
+    if (v < 1000) return String(v);
+    if (v < 1000000) return (v/1000) + 'K';
+    return (v/1000000) + 'M';
+  }
+
+  // Build the visual stack of bills based on count
+  buildStack(count, accent) {
+    if (count <= 0) return [];
+    // Show up to 30 visible bills; if more, just show 30 (with bigger badge)
+    const visible = Math.min(count, 30);
+    const lighter = this.lighten(accent, 0.3);
+    const bills = [];
+    // SVG viewBox is 360 wide, bills are 40 wide, overlap heavily
+    // Distribute over available width 0..360 starting at right (RTL feel)
+    const totalWidth = 360;
+    const billW = 40;
+    const billH = 22;
+    // overlap so they fan out left-to-right
+    const maxSpread = totalWidth - billW;
+    const step = visible > 1 ? Math.min(20, maxSpread / (visible - 1)) : 0;
+    for (let i = 0; i < visible; i++) {
+      const x = i * step;
+      // alternate small vertical jitter for tactile feel
+      const jitterY = (i % 3) - 1; // -1,0,1
+      const y = 12 + jitterY * 0.6;
+      const rot = ((i * 37) % 5) - 2; // -2..2 degrees
+      const fill = i % 2 === 0 ? accent : lighter;
+      const stroke = accent;
+      const opacity = 0.55 + (i / visible) * 0.45; // back lighter, front darker
+      bills.push({
+        x: x.toFixed(2),
+        y: y.toFixed(2),
+        cx: (x + billW/2).toFixed(2),
+        cy: (y + billH/2).toFixed(2),
+        rot: rot.toFixed(2),
+        fill,
+        stroke,
+        opacity: opacity.toFixed(2),
+      });
+    }
+    return bills;
+  }
+
+  componentWillUnmount() { this.clearHold(); }
+  clearHold() { if (this._holdT) { clearInterval(this._holdT); this._holdT = null; } }
+
+  renderVals() {
+    const d = this.props.denom || {};
+    const count = this.props.count || 0;
+    const onChange = this.props.onChange || (()=>{});
+    const subtotal = (d.value || 0) * count;
+    const accent = d.color || '#354F7E';
+    const isNoir = d.tone === 'noir';
+
+    const quickAdds = [5, 10, 25, 50, 100].map(q => ({
+      label: q,
+      onClick: () => onChange(count + q),
+    }));
+
+    const startHold = (delta) => {
+      this.clearHold();
+      let current = count;
+      this._holdT = setInterval(() => {
+        current = Math.max(0, current + delta);
+        onChange(current);
+      }, 110);
+    };
+
+    const goldAccent = '#B89968';
+
+    // Color tokens differ for noir 50k row vs others
+    if (isNoir) {
+      return {
+        denomName: d.name,
+        denomLabel: d.label,
+        shortName: this.shortName(d.value),
+        accent: goldAccent,
+        rowBg: 'linear-gradient(135deg,#1C1B19 0%,#26241F 100%)',
+        rowBorder: 'rgba(184,153,104,.4)',
+        rowHoverBorder: '#B89968',
+        rowInk: '#F5F2EC',
+        rowInkSoft: 'rgba(245,242,236,.55)',
+        rowDivider: 'rgba(184,153,104,.25)',
+        stampBg: 'rgba(184,153,104,.08)',
+        stampBorder: 'rgba(184,153,104,.5)',
+        stampRing: 'rgba(184,153,104,.25)',
+        stepperBg: 'rgba(184,153,104,.08)',
+        stepperBorder: 'rgba(184,153,104,.3)',
+        stepperInk: 'rgba(245,242,236,.7)',
+        stepperHover: 'rgba(184,153,104,.12)',
+        stepperPress: 'rgba(184,153,104,.2)',
+        accentHover: 'rgba(184,153,104,.12)',
+        accentPress: 'rgba(184,153,104,.22)',
+        accentBorder: 'rgba(184,153,104,.5)',
+        chipBorder: 'rgba(184,153,104,.25)',
+        subtotalColor: count > 0 ? goldAccent : 'rgba(245,242,236,.35)',
+        isNoir: true,
+        count,
+        isActive: count > 0,
+        isInactive: count === 0,
+        subtotalDisplay: this.fmt(subtotal),
+        stackBills: this.buildStack(count, goldAccent),
+        quickAdds,
+        onInc: () => onChange(count + 1),
+        onDec: () => onChange(Math.max(0, count - 1)),
+        onInput: (e) => onChange(e.target.value),
+        onFocus: (e) => e.target.select(),
+        onHoldInc: () => startHold(1),
+        onHoldDec: () => startHold(-1),
+        onHoldEnd: () => this.clearHold(),
+      };
+    }
+
+    return {
+      denomName: d.name,
+      denomLabel: d.label,
+      shortName: this.shortName(d.value),
+      accent,
+      rowBg: count > 0 ? '#FFFFFF' : 'rgba(255,255,255,.55)',
+      rowBorder: count > 0 ? this.hexA(accent, 0.3) : 'var(--line)',
+      rowHoverBorder: this.hexA(accent, 0.6),
+      rowInk: 'var(--ink)',
+      rowInkSoft: 'var(--ink-3)',
+      rowDivider: 'var(--line-soft)',
+      stampBg: count > 0 ? this.hexA(accent, 0.06) : 'var(--paper-2)',
+      stampBorder: this.hexA(accent, 0.4),
+      stampRing: this.hexA(accent, 0.15),
+      stepperBg: 'var(--paper-2)',
+      stepperBorder: 'var(--line)',
+      stepperInk: 'var(--ink-2)',
+      stepperHover: this.hexA(accent, 0.06),
+      stepperPress: this.hexA(accent, 0.12),
+      accentHover: this.hexA(accent, 0.08),
+      accentPress: this.hexA(accent, 0.16),
+      accentBorder: this.hexA(accent, 0.4),
+      chipBorder: 'var(--line)',
+      subtotalColor: count > 0 ? accent : 'var(--ink-3)',
+      isNoir: false,
+      count,
+      isActive: count > 0,
+      isInactive: count === 0,
+      subtotalDisplay: this.fmt(subtotal),
+      stackBills: this.buildStack(count, accent),
+      quickAdds,
+      onInc: () => onChange(count + 1),
+      onDec: () => onChange(Math.max(0, count - 1)),
+      onInput: (e) => onChange(e.target.value),
+      onFocus: (e) => e.target.select(),
+      onHoldInc: () => startHold(1),
+      onHoldDec: () => startHold(-1),
+      onHoldEnd: () => this.clearHold(),
+    };
+  }
+}
+</script>
+</body>
+</html>

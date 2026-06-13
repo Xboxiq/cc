@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#f5f6fa;
+    --bg-2:#eef0f6;
+    --surface:#ffffff;
+    --ink:#0f172a;
+    --ink-2:#475569;
+    --ink-3:#64748b;
+    --ink-4:#94a3b8;
+    --line:#e6e8ef;
+    --line-2:#eef0f6;
+    /* brand */
+    --navy:#232350;
+    --navy-2:#2e2e6b;
+    --navy-3:#15153a;
+    --red:#c1121f;
+    --red-2:#e0313c;
+    --gold:#f4c430;
+    --gold-2:#d9a821;
+  }
+  html,body{
+    background:var(--bg);
+    font-family:'Cairo','Tajawal','Plus Jakarta Sans',system-ui,sans-serif;
+    color:var(--ink);
+    direction:rtl;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(900px 600px at 95% -10%, rgba(193,18,31,.06), transparent 60%),
+      radial-gradient(900px 600px at 0% 110%, rgba(35,35,80,.07), transparent 60%),
+      var(--bg);
+  }
+  input[type=number]{-moz-appearance:textfield}
+  input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;-webkit-tap-highlight-color:transparent}
+  .num{font-family:'Plus Jakarta Sans','Cairo',system-ui,sans-serif;font-feature-settings:'tnum' 1;font-variant-numeric:tabular-nums;letter-spacing:-.018em}
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .label-eyebrow{font-size:11px;font-weight:700;color:var(--ink-3);letter-spacing:.16em;text-transform:uppercase;font-family:'Plus Jakarta Sans',sans-serif}
+</style>
+</helmet>
+
+<div style="max-width:1240px;margin:0 auto;padding:28px 24px 80px">
+
+  <!-- ─── Header ─── -->
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px">
+    <div style="display:flex;align-items:center;gap:14px">
+      <!-- Refined monogram -->
+      <div style="position:relative;width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,var(--navy-3),var(--navy) 45%,var(--red) 130%);display:grid;place-items:center;box-shadow:0 10px 28px -8px rgba(35,35,80,.5),inset 0 1px 0 rgba(255,255,255,.12)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M16 7H10a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6H7" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- gold pin -->
+        <span style="position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px var(--bg)"></span>
+      </div>
+      <div>
+        <div class="label-eyebrow">حاسبة المحفظة</div>
+        <h1 style="font-size:22px;font-weight:800;line-height:1.2;color:var(--ink);letter-spacing:-.01em;margin-top:4px">فئات الدينار العراقي</h1>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <!-- Save status -->
+      <div style="display:flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.15)">
+        <span style="position:relative;width:6px;height:6px;border-radius:50%;background:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.18)"></span>
+        <span style="font-size:12px;font-weight:600;color:#15803d">محفوظ تلقائياً</span>
+      </div>
+      <button onClick="{{ onReset }}" style="display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--line);color:{{ resetColor }};font-weight:600;font-size:13px;font-family:inherit;transition:all .2s;box-shadow:0 1px 2px rgba(15,23,42,.04)" style-hover="background:#fef2f2;border-color:#fecaca;color:#b91c1c">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        تصفير الكل
+      </button>
+    </div>
+  </header>
+
+  <!-- ─── HERO total card ─── -->
+  <section style="position:relative;border-radius:28px;overflow:hidden;margin-bottom:24px;box-shadow:0 24px 60px -24px rgba(35,35,80,.55),0 4px 12px -4px rgba(35,35,80,.18)">
+    <!-- gold pinstripe top -->
+    <div style="height:3px;background:linear-gradient(90deg,var(--navy),var(--gold) 50%,var(--red))"></div>
+
+    <div style="position:relative;padding:36px 40px 32px;background:linear-gradient(135deg,#15153a 0%,#232350 50%,#3a1a2a 100%);color:#fff">
+      <!-- decorative glows -->
+      <div style="position:absolute;top:-100px;left:-50px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(193,18,31,.32),transparent 60%);filter:blur(40px);pointer-events:none"></div>
+      <div style="position:absolute;bottom:-120px;right:-60px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,rgba(244,196,48,.18),transparent 60%);filter:blur(40px);pointer-events:none"></div>
+      <!-- grid texture -->
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;mask-image:radial-gradient(ellipse 75% 60% at 50% 50%, black, transparent)"></div>
+      <!-- big د.ع watermark -->
+      <div style="position:absolute;top:-20px;left:30px;font-family:'Cairo';font-weight:900;font-size:240px;color:rgba(244,196,48,.04);line-height:1;letter-spacing:-.06em;pointer-events:none">د.ع</div>
+
+      <div style="position:relative">
+        <!-- Top tag row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+          <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:rgba(244,196,48,.14);border:1px solid rgba(244,196,48,.3)">
+            <span style="width:5px;height:5px;border-radius:50%;background:var(--gold)"></span>
+            <span style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em;text-transform:uppercase">الإجمالي الحالي</span>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.45);font-weight:600;letter-spacing:.1em">
+            <span>IQD</span>
+            <span style="color:rgba(255,255,255,.25)">·</span>
+            <span>د.ع</span>
+          </div>
+        </div>
+
+        <!-- Main grid: total | divider | stats -->
+        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:32px;align-items:end">
+          <div>
+            <div class="num" style="font-size:clamp(56px,8vw,88px);font-weight:800;line-height:.95;color:#fff;letter-spacing:-.035em;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap">
+              <span>{{ totalDisplay }}</span>
+              <span style="font-size:.32em;font-weight:600;color:rgba(255,255,255,.45);font-family:'Cairo'">دينار</span>
+            </div>
+            <div style="margin-top:14px;display:flex;align-items:center;gap:10px">
+              <svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 7h10M2 7l4-4M2 7l4 4" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="rotate(180 7 7)"/></svg>
+              <span style="font-size:14px;color:rgba(255,255,255,.7);font-weight:500;line-height:1.5">{{ totalInWords }}</span>
+            </div>
+          </div>
+
+          <!-- Stats column with separators -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-right:1px solid rgba(255,255,255,.1);padding-right:32px">
+            <div style="padding:0 14px;text-align:right">
+              <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.14em;text-transform:uppercase">ورقة</div>
+              <div class="num" style="font-size:28px;font-weight:700;color:#fff;margin-top:4px;line-height:1">{{ totalPiecesDisplay }}</div>
+            </div>
+            <div style="padding:0 14px;text-align:right;border-right:1px solid rgba(255,255,255,.08)">
+              <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.14em;text-transform:uppercase">فئة</div>
+              <div class="num" style="font-size:28px;font-weight:700;color:#fff;margin-top:4px;line-height:1">{{ activeCountDisplay }}<span style="color:rgba(255,255,255,.3);font-size:18px;font-weight:600;margin-right:2px">/7</span></div>
+            </div>
+            <div style="padding:0 14px;text-align:right;border-right:1px solid rgba(255,255,255,.08)">
+              <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.14em;text-transform:uppercase">المتوسط</div>
+              <div class="num" style="font-size:28px;font-weight:700;color:#fff;margin-top:4px;line-height:1">{{ avgValueDisplay }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inline distribution mini-bar -->
+        <div style="margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <span style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.12em;text-transform:uppercase">توزيع الفئات</span>
+            <sc-if value="{{ hasAny }}" hint-placeholder-val="{{ true }}">
+              <span style="font-size:12px;color:rgba(255,255,255,.45)" class="num">{{ activeCountDisplay }} نشطة</span>
+            </sc-if>
+          </div>
+          <sc-if value="{{ hasAny }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="display:flex;height:10px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06);gap:2px">
+                <sc-for list="{{ segments }}" as="s" hint-placeholder-count="3">
+                  <div style="height:100%;flex-basis:{{ s.pct }}%;background:{{ s.color }};transition:flex-basis .5s cubic-bezier(.4,0,.2,1)" title="{{ s.title }}"></div>
+                </sc-for>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px">
+                <sc-for list="{{ segments }}" as="s" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:7px">
+                    <span style="width:8px;height:8px;border-radius:2px;background:{{ s.color }}"></span>
+                    <span class="num" style="font-size:12px;font-weight:700;color:#fff">{{ s.label }}</span>
+                    <span class="num" style="font-size:11px;color:rgba(255,255,255,.45);font-weight:500">{{ s.pctLabel }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="height:10px;border-radius:999px;background:rgba(255,255,255,.06);position:relative;overflow:hidden">
+              <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);animation:shimmer 2.5s infinite"></div>
+            </div>
+            <style>@keyframes shimmer{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}</style>
+            <div style="font-size:12px;color:rgba(255,255,255,.5);margin-top:10px">سيظهر التوزيع تلقائياً عند إدخال الأوراق</div>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section header ─── -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin:32px 0 14px;padding:0 4px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="width:4px;height:22px;background:linear-gradient(180deg,var(--navy),var(--red));border-radius:2px"></span>
+      <h2 style="font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.005em">الفئات النقدية</h2>
+      <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 7px;border-radius:999px;background:var(--ink);color:#fff;font-size:11px;font-weight:700" class="num">7</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3);font-weight:500">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="var(--gold)"/></svg>
+      الحساب فوري
+    </div>
+  </div>
+
+  <!-- ─── Denomination grid ─── -->
+  <section style="display:grid;grid-template-columns:repeat(auto-fill,minmax(296px,1fr));gap:14px">
+    <sc-for list="{{ denominations }}" as="d" hint-placeholder-count="7">
+      <dc-import name="DenomCardV5" denom="{{ d }}" count="{{ d.count }}" on-change="{{ d.onChange }}" hint-size="100%,260px"></dc-import>
+    </sc-for>
+  </section>
+
+  <!-- ─── Footer ─── -->
+  <footer style="margin-top:36px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--ink-4)">
+    <div>تُحفظ البيانات في هذا الجهاز فقط · لا يتم إرسال أي شيء</div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="width:24px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))"></span>
+      <span style="letter-spacing:.1em;font-weight:600">BAGHDAD · IQ</span>
+      <span style="width:24px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)"></span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  STORAGE_KEY = 'iqd-calc-counts-v5';
+  DENOMS = [
+    { value: 250,    name: '250',    label: 'مئتان وخمسون',     color: '#0e7490', tint:'#ecfeff', ink:'#155e75' },
+    { value: 500,    name: '500',    label: 'خمسمئة',           color: '#0d9488', tint:'#f0fdfa', ink:'#115e59' },
+    { value: 1000,   name: '1,000',  label: 'ألف',               color: '#6d28d9', tint:'#faf5ff', ink:'#5b21b6' },
+    { value: 5000,   name: '5,000',  label: 'خمسة آلاف',         color: '#c2410c', tint:'#fff7ed', ink:'#9a3412' },
+    { value: 10000,  name: '10,000', label: 'عشرة آلاف',         color: '#b91c1c', tint:'#fef2f2', ink:'#991b1b' },
+    { value: 25000,  name: '25,000', label: 'خمسة وعشرون ألف',   color: '#15803d', tint:'#f0fdf4', ink:'#14532d' },
+    { value: 50000,  name: '50,000', label: 'خمسون ألف',         color: '#232350', tint:'#eef2ff', ink:'#1e1b4b' },
+  ];
+
+  state = { counts: {} };
+
+  componentDidMount() {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') this.setState({ counts: parsed });
+      }
+    } catch(e){}
+  }
+  persist(counts) { try { localStorage.setItem(this.STORAGE_KEY, JSON.stringify(counts)); } catch(e){} }
+  setCount(value, n) {
+    const next = { ...this.state.counts };
+    const clean = Math.max(0, Math.min(99999, Math.floor(Number(n) || 0)));
+    if (clean === 0) delete next[value]; else next[value] = clean;
+    this.setState({ counts: next });
+    this.persist(next);
+  }
+  reset = () => {
+    if (Object.keys(this.state.counts).length === 0) return;
+    this.setState({ counts: {} });
+    this.persist({});
+  };
+  fmt(n){ return Number(Math.round(n)).toLocaleString('en-US'); }
+
+  toArabicWords(n) {
+    if (!n) return 'ابدأ بإدخال عدد الأوراق لكل فئة';
+    const units = [
+      { v: 1e9, s: 'مليار' },
+      { v: 1e6, s: 'مليون' },
+      { v: 1e3, s: 'ألف' },
+    ];
+    let parts = [];
+    let rem = n;
+    for (const u of units) {
+      if (rem >= u.v) {
+        const c = Math.floor(rem / u.v);
+        rem = rem % u.v;
+        parts.push(`${this.fmt(c)} ${u.s}`);
+      }
+    }
+    if (rem > 0) parts.push(`${this.fmt(rem)}`);
+    return parts.join(' و') + ' دينار عراقي فقط لا غير';
+  }
+
+  renderVals() {
+    const counts = this.state.counts;
+    const denominations = this.DENOMS.map(d => ({
+      ...d,
+      count: counts[d.value] || 0,
+      onChange: (n) => this.setCount(d.value, n),
+    }));
+
+    const total = denominations.reduce((s, d) => s + d.value * d.count, 0);
+    const totalPieces = denominations.reduce((s, d) => s + d.count, 0);
+    const activeCount = denominations.filter(d => d.count > 0).length;
+    const avg = totalPieces > 0 ? total / totalPieces : 0;
+
+    const segments = denominations
+      .filter(d => d.count > 0)
+      .map(d => {
+        const amount = d.value * d.count;
+        const pct = total > 0 ? (amount / total) * 100 : 0;
+        return {
+          color: d.color,
+          pct: pct.toFixed(2),
+          pctLabel: `${pct.toFixed(1)}%`,
+          label: d.name,
+          title: `${d.name}: ${this.fmt(amount)} د.ع`,
+        };
+      })
+      .sort((a,b) => parseFloat(b.pct) - parseFloat(a.pct));
+
+    return {
+      denominations,
+      totalDisplay: this.fmt(total),
+      totalPiecesDisplay: this.fmt(totalPieces),
+      activeCountDisplay: activeCount,
+      avgValueDisplay: this.fmt(avg),
+      totalInWords: this.toArabicWords(total),
+      segments,
+      hasAny: total > 0,
+      isEmpty: total === 0,
+      resetColor: total > 0 ? 'var(--ink-2)' : 'var(--ink-4)',
+      onReset: this.reset,
+    };
+  }
+}
+</script>
+</body>
+</html>

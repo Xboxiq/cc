@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="position:relative;background:#ffffff;border-radius:24px;overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 3px rgba(0,0,0,.04),0 0 0 1px rgba(0,0,0,.06)" style-hover="transform:translateY(-3px);box-shadow:0 18px 40px -16px rgba(0,0,0,.18),0 0 0 1px {{ accentSoft }}">
+
+  <!-- Top color band -->
+  <div style="position:relative;height:96px;background:linear-gradient(140deg,{{ accent }} 0%,{{ accentLight }} 100%);overflow:hidden">
+    <!-- glossy highlight -->
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 50%);pointer-events:none"></div>
+    <!-- watermark -->
+    <div class="num" style="position:absolute;bottom:-14px;right:-6px;font-size:96px;font-weight:900;color:rgba(255,255,255,.18);line-height:1;letter-spacing:-.04em;font-family:'SF Pro Display',-apple-system,system-ui,sans-serif">{{ denomName }}</div>
+    <!-- denom badge -->
+    <div style="position:absolute;top:16px;right:18px;display:flex;align-items:baseline;gap:6px;color:#fff">
+      <div class="num" style="font-size:30px;font-weight:800;line-height:1;letter-spacing:-.025em">{{ denomName }}</div>
+      <div class="ar" style="font-size:13px;font-weight:700;opacity:.85">د.ع</div>
+    </div>
+    <!-- spelled name -->
+    <div class="ar" style="position:absolute;top:54px;right:18px;font-size:11px;font-weight:600;color:rgba(255,255,255,.85);letter-spacing:0">{{ denomLabel }}</div>
+    <!-- active pill -->
+    <sc-if value="{{ isActive }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;top:16px;left:18px;display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.22);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.3)">
+        <span class="num" style="font-size:12px;font-weight:700;color:#fff">{{ count }}×</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- Body -->
+  <div style="padding:18px 20px 20px">
+    <!-- Stepper -->
+    <div style="display:grid;grid-template-columns:44px 1fr 44px;gap:8px;align-items:stretch">
+      <button onClick="{{ onDec }}" style="height:48px;border-radius:14px;background:rgba(0,0,0,.04);color:#1d1d1f;font-size:22px;font-weight:500;display:grid;place-items:center;transition:all .15s" style-hover="background:rgba(0,0,0,.07)" style-active="transform:scale(.92);background:rgba(0,0,0,.1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+      <input type="number" min="0" max="99999" value="{{ count }}" onInput="{{ onInput }}" onFocus="{{ onFocus }}" placeholder="0" class="num" style="height:48px;width:100%;border:none;border-radius:14px;background:rgba(0,0,0,.04);text-align:center;font-size:22px;font-weight:700;color:#1d1d1f;outline:none;transition:all .15s;font-family:'SF Pro Display',-apple-system,system-ui,sans-serif" style-focus="background:#fff;box-shadow:0 0 0 2px {{ accent }}">
+      <button onClick="{{ onInc }}" style="height:48px;border-radius:14px;background:{{ accent }};color:#fff;font-size:22px;font-weight:500;display:grid;place-items:center;transition:all .15s;box-shadow:0 4px 12px -4px {{ accentSoft }}" style-hover="filter:brightness(1.08)" style-active="transform:scale(.92)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Quick chips -->
+    <div style="display:flex;gap:6px;margin-top:10px">
+      <sc-for list="{{ quickAdds }}" as="q" hint-placeholder-count="4">
+        <button onClick="{{ q.onClick }}" class="num" style="flex:1;height:30px;border-radius:9px;background:transparent;color:#6e6e73;font-size:12px;font-weight:600;transition:all .15s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)" style-hover="background:{{ accentBg }};color:{{ accent }};box-shadow:inset 0 0 0 1px {{ accentSoft }}">+{{ q.label }}</button>
+      </sc-for>
+    </div>
+
+    <!-- Subtotal -->
+    <div style="margin-top:16px;padding:14px 16px;border-radius:14px;background:{{ subtotalBg }};display:flex;align-items:center;justify-content:space-between;transition:all .25s">
+      <span class="ar" style="font-size:12px;font-weight:600;color:{{ subtotalLabelColor }}">المجموع الفرعي</span>
+      <div style="display:flex;align-items:baseline;gap:5px">
+        <span class="num" style="font-size:20px;font-weight:800;color:{{ subtotalColor }};letter-spacing:-.02em">{{ subtotalDisplay }}</span>
+        <span class="ar" style="font-size:11px;font-weight:700;color:{{ subtotalLabelColor }}">د.ع</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 300, &quot;height&quot;: 320},
+  &quot;denom&quot;: {&quot;editor&quot;: null, &quot;default&quot;: {&quot;value&quot;: 1000, &quot;name&quot;: &quot;1,000&quot;, &quot;label&quot;: &quot;ألف&quot;, &quot;color&quot;: &quot;#5E5CE6&quot;}, &quot;tsType&quot;: &quot;{value:number,name:string,label:string,color:string}&quot;},
+  &quot;count&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 3, &quot;tsType&quot;: &quot;number&quot;},
+  &quot;onChange&quot;: {&quot;editor&quot;: null, &quot;default&quot;: null, &quot;tsType&quot;: &quot;(n:number)=&gt;void&quot;}
+}">
+class Component extends DCLogic {
+  fmt(n){ return Number(n).toLocaleString('en-US'); }
+  // Lighten hex toward white by amount 0..1
+  lighten(hex, amt) {
+    const c = hex.replace('#','');
+    const r = parseInt(c.substring(0,2),16);
+    const g = parseInt(c.substring(2,4),16);
+    const b = parseInt(c.substring(4,6),16);
+    const mix = (ch) => Math.round(ch + (255 - ch) * amt);
+    return `rgb(${mix(r)},${mix(g)},${mix(b)})`;
+  }
+  hexA(hex, alpha) {
+    const c = hex.replace('#','');
+    const r = parseInt(c.substring(0,2),16);
+    const g = parseInt(c.substring(2,4),16);
+    const b = parseInt(c.substring(4,6),16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+  renderVals() {
+    const d = this.props.denom || {};
+    const count = this.props.count || 0;
+    const onChange = this.props.onChange || (()=>{});
+    const subtotal = (d.value || 0) * count;
+    const accent = d.color || '#0A84FF';
+
+    const quickAdds = [10, 25, 50, 100].map(q => ({
+      label: q,
+      onClick: () => onChange(count + q),
+    }));
+
+    return {
+      denomName: d.name,
+      denomLabel: d.label,
+      accent,
+      accentLight: this.lighten(accent, 0.25),
+      accentSoft: this.hexA(accent, 0.35),
+      accentBg: this.hexA(accent, 0.1),
+      count,
+      isActive: count > 0,
+      subtotalDisplay: this.fmt(subtotal),
+      subtotalBg: count > 0 ? this.hexA(accent, 0.08) : 'rgba(0,0,0,.025)',
+      subtotalColor: count > 0 ? accent : '#a1a1a6',
+      subtotalLabelColor: count > 0 ? this.hexA(accent, 0.85) : '#a1a1a6',
+      onInc: () => onChange(count + 1),
+      onDec: () => onChange(Math.max(0, count - 1)),
+      onInput: (e) => onChange(e.target.value),
+      onFocus: (e) => e.target.select(),
+      quickAdds,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="position:relative;background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;transition:all .2s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 3px rgba(15,23,42,.04)" style-hover="transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(15,23,42,.18);border-color:{{ accentSoft }}">
+
+  <!-- Bill visual top -->
+  <div style="position:relative;height:88px;background:{{ tint }};border-bottom:1px dashed {{ accentSoft }};overflow:hidden">
+    <!-- watermark digits -->
+    <div class="num" style="position:absolute;top:50%;right:14px;transform:translateY(-50%);font-size:62px;font-weight:900;color:{{ ink }};opacity:.12;letter-spacing:-.04em;line-height:1">{{ denomName }}</div>
+    <!-- corner stamp -->
+    <div style="position:absolute;top:12px;left:14px;display:flex;align-items:center;gap:8px">
+      <div style="width:34px;height:34px;border-radius:10px;background:{{ accent }};display:grid;place-items:center;color:#fff;font-weight:800;font-size:12px;box-shadow:0 4px 12px -2px {{ accentSoft }}">د.ع</div>
+      <div>
+        <div style="font-size:11px;font-weight:600;color:{{ ink }};opacity:.7;letter-spacing:.04em">فئة</div>
+        <div class="num" style="font-size:18px;font-weight:800;color:{{ ink }};line-height:1">{{ denomName }}</div>
+      </div>
+    </div>
+    <!-- spelled name bottom right -->
+    <div style="position:absolute;bottom:8px;right:14px;font-size:11px;font-weight:600;color:{{ ink }};opacity:.55">{{ denomLabel }}</div>
+    <!-- active indicator -->
+    <sc-if value="{{ isActive }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;top:12px;right:14px;display:flex;align-items:center;gap:6px;background:#fff;padding:4px 10px;border-radius:999px;box-shadow:0 2px 6px rgba(15,23,42,.08)">
+        <span style="width:6px;height:6px;border-radius:50%;background:{{ accent }};box-shadow:0 0 0 3px {{ accentSoft }}"></span>
+        <span class="num" style="font-size:11px;font-weight:700;color:{{ ink }}">{{ count }}×</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- Controls -->
+  <div style="padding:16px 18px 18px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <label style="font-size:12px;font-weight:600;color:#64748b;letter-spacing:.02em">عدد الأوراق</label>
+      <div class="num" style="font-size:11px;font-weight:600;color:#94a3b8" title="القيمة الفردية">× {{ denomName }}</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:36px 1fr 36px;gap:8px;align-items:stretch">
+      <button onClick="{{ onDec }}" style="height:40px;border-radius:10px;background:#f1f5f9;color:#475569;font-size:20px;font-weight:700;display:grid;place-items:center;transition:all .15s;border:1px solid transparent" style-hover="background:#e2e8f0;color:#0f172a" style-active="transform:scale(.94)">−</button>
+      <input type="number" min="0" max="99999" value="{{ count }}" onInput="{{ onInput }}" onFocus="{{ onFocus }}" placeholder="0" class="num" style="height:40px;width:100%;border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;text-align:center;font-size:18px;font-weight:700;color:#0f172a;outline:none;transition:all .15s" style-focus="border-color:{{ accent }};background:#fff;box-shadow:0 0 0 3px {{ accentSoft }}">
+      <button onClick="{{ onInc }}" style="height:40px;border-radius:10px;background:{{ accent }};color:#fff;font-size:20px;font-weight:700;display:grid;place-items:center;transition:all .15s;box-shadow:0 4px 12px -4px {{ accentSoft }}" style-hover="filter:brightness(1.08)" style-active="transform:scale(.94)">+</button>
+    </div>
+
+    <!-- Quick-add chips -->
+    <div style="display:flex;gap:6px;margin-top:10px">
+      <sc-for list="{{ quickAdds }}" as="q" hint-placeholder-count="4">
+        <button onClick="{{ q.onClick }}" class="num" style="flex:1;height:28px;border-radius:8px;background:transparent;border:1px solid #e2e8f0;color:#64748b;font-size:12px;font-weight:600;transition:all .15s" style-hover="background:{{ q.hoverBg }};border-color:{{ q.hoverBorder }};color:{{ q.hoverInk }}">+{{ q.label }}</button>
+      </sc-for>
+    </div>
+
+    <!-- Subtotal -->
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:12px;font-weight:600;color:#64748b">المجموع الفرعي</span>
+      <div style="display:flex;align-items:baseline;gap:6px">
+        <span class="num" style="font-size:18px;font-weight:800;color:{{ subtotalColor }};letter-spacing:-.01em">{{ subtotalDisplay }}</span>
+        <span style="font-size:11px;font-weight:600;color:#94a3b8">د.ع</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: {&quot;width&quot;: 320, &quot;height&quot;: 260},
+  &quot;denom&quot;: {&quot;editor&quot;: null, &quot;default&quot;: {&quot;value&quot;: 1000, &quot;name&quot;: &quot;1,000&quot;, &quot;label&quot;: &quot;ألف&quot;, &quot;color&quot;: &quot;#7c3aed&quot;, &quot;tint&quot;: &quot;linear-gradient(135deg,#f5f3ff,#ede9fe)&quot;, &quot;ink&quot;: &quot;#5b21b6&quot;, &quot;accent&quot;: &quot;#7c3aed&quot;}, &quot;tsType&quot;: &quot;{value:number,name:string,label:string,color:string,tint:string,ink:string,accent:string}&quot;},
+  &quot;count&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 0, &quot;tsType&quot;: &quot;number&quot;},
+  &quot;onChange&quot;: {&quot;editor&quot;: null, &quot;default&quot;: null, &quot;tsType&quot;: &quot;(n:number)=&gt;void&quot;}
+}">
+class Component extends DCLogic {
+  fmt(n){ return Number(n).toLocaleString('en-US'); }
+  renderVals() {
+    const d = this.props.denom || {};
+    const count = this.props.count || 0;
+    const onChange = this.props.onChange || (()=>{});
+    const subtotal = (d.value || 0) * count;
+
+    const quickAdds = [10, 25, 50, 100].map(q => ({
+      label: q,
+      onClick: () => onChange(count + q),
+      hoverBg: d.tint,
+      hoverBorder: d.accent + '55',
+      hoverInk: d.ink,
+    }));
+
+    return {
+      denomName: d.name,
+      denomLabel: d.label,
+      tint: d.tint,
+      ink: d.ink,
+      accent: d.accent,
+      accentSoft: (d.accent || '#000') + '33',
+      count,
+      isActive: count > 0,
+      subtotalDisplay: this.fmt(subtotal),
+      subtotalColor: count > 0 ? d.ink : '#94a3b8',
+      onInc: () => onChange(count + 1),
+      onDec: () => onChange(Math.max(0, count - 1)),
+      onInput: (e) => onChange(e.target.value),
+      onFocus: (e) => e.target.select(),
+      quickAdds,
+    };
+  }
+}
+</script>
+</body>
+</html>
