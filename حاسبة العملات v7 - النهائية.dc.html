@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  /* ─── LIGHT (default) ─── */
+  :root{
+    --bg:#F2F2F7;
+    --bg-2:#EBEBF0;
+    --surface:#FFFFFF;
+    --surface-2:#F7F7FA;
+    --glass-bg:rgba(255,255,255,.6);
+    --glass-bg-strong:rgba(255,255,255,.75);
+    --glass-border:rgba(0,0,0,.06);
+    --glass-shadow:0 8px 32px -8px rgba(0,0,0,.12);
+    --label:#000000;
+    --label-2:rgba(60,60,67,.6);
+    --label-3:rgba(60,60,67,.3);
+    --label-4:rgba(60,60,67,.18);
+    --separator:rgba(60,60,67,.18);
+    --separator-soft:rgba(60,60,67,.08);
+    --hero-bg:linear-gradient(140deg,#1c1c1e 0%,#2c2c2e 55%,#1c1c1e 100%);
+    --hero-glow-1:rgba(255,149,0,.32);
+    --hero-glow-2:rgba(94,92,230,.36);
+    --body-bg-grad-1:rgba(0,122,255,.04);
+    --body-bg-grad-2:rgba(255,55,95,.03);
+    --c-blue:#007AFF;
+    --c-mint:#00C7BE;
+    --c-teal:#30B0C7;
+    --c-cyan:#32ADE6;
+    --c-indigo:#5856D6;
+    --c-purple:#AF52DE;
+    --c-pink:#FF2D55;
+    --c-red:#FF3B30;
+    --c-orange:#FF9500;
+    --c-yellow:#FFCC00;
+    --c-green:#34C759;
+    --press-bg:rgba(120,120,128,.12);
+    --press-bg-2:rgba(120,120,128,.2);
+  }
+
+  /* ─── DARK ─── */
+  :root[data-theme="dark"]{
+    --bg:#000000;
+    --bg-2:#0B0B0F;
+    --surface:#1C1C1E;
+    --surface-2:#2C2C2E;
+    --glass-bg:rgba(255,255,255,.06);
+    --glass-bg-strong:rgba(255,255,255,.1);
+    --glass-border:rgba(255,255,255,.1);
+    --glass-shadow:0 10px 40px -10px rgba(0,0,0,.6);
+    --label:#FFFFFF;
+    --label-2:rgba(235,235,245,.6);
+    --label-3:rgba(235,235,245,.3);
+    --label-4:rgba(235,235,245,.18);
+    --separator:rgba(84,84,88,.65);
+    --separator-soft:rgba(84,84,88,.3);
+    --hero-bg:linear-gradient(140deg,#0a0a0d 0%,#15151a 55%,#0a0a0d 100%);
+    --hero-glow-1:rgba(255,159,10,.42);
+    --hero-glow-2:rgba(94,92,230,.48);
+    --body-bg-grad-1:rgba(10,132,255,.08);
+    --body-bg-grad-2:rgba(255,55,95,.06);
+    --c-blue:#0A84FF;
+    --c-mint:#63E6E2;
+    --c-teal:#40CBE0;
+    --c-cyan:#64D2FF;
+    --c-indigo:#7D7AFF;
+    --c-purple:#DA8FFF;
+    --c-pink:#FF6482;
+    --c-red:#FF6961;
+    --c-orange:#FF9F0A;
+    --c-yellow:#FFD60A;
+    --c-green:#30D158;
+    --press-bg:rgba(120,120,128,.24);
+    --press-bg-2:rgba(120,120,128,.36);
+  }
+
+  html,body{
+    background:var(--bg);
+    font-family:-apple-system,'SF Pro Display','SF Pro Text',BlinkMacSystemFont,'Cairo',system-ui,sans-serif;
+    color:var(--label);
+    direction:rtl;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    transition:background-color .35s ease;
+  }
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1100px 700px at 92% -10%, var(--body-bg-grad-1), transparent 55%),
+      radial-gradient(900px 600px at 0% 105%, var(--body-bg-grad-2), transparent 55%),
+      var(--bg);
+    background-attachment:fixed;
+  }
+
+  input[type=number]{-moz-appearance:textfield}
+  input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;-webkit-tap-highlight-color:transparent}
+
+  .num{font-feature-settings:'tnum' 1,'ss01' 1;font-variant-numeric:tabular-nums;letter-spacing:-.022em}
+  .ar{font-family:'Cairo',-apple-system,system-ui,sans-serif}
+  .section-h{font-size:13px;font-weight:400;color:var(--label-2);letter-spacing:-.005em;padding:28px 4px 12px;display:flex;align-items:center;justify-content:space-between}
+  .inset{background:var(--surface);border-radius:18px;overflow:hidden;transition:background-color .35s ease}
+
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.8);opacity:0}}
+  @keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .stagger>*{opacity:0;animation:slideUp .45s cubic-bezier(.16,1,.3,1) forwards}
+  .stagger>*:nth-child(1){animation-delay:.04s}
+  .stagger>*:nth-child(2){animation-delay:.08s}
+  .stagger>*:nth-child(3){animation-delay:.12s}
+  .stagger>*:nth-child(4){animation-delay:.16s}
+  .stagger>*:nth-child(5){animation-delay:.20s}
+  .stagger>*:nth-child(6){animation-delay:.24s}
+  .stagger>*:nth-child(7){animation-delay:.28s}
+
+  @media (prefers-reduced-motion:reduce){
+    .stagger>*{opacity:1;animation:none}
+    *{transition-duration:.01ms!important}
+  }
+</style>
+</helmet>
+
+<div style="max-width:980px;margin:0 auto;padding:24px 20px 96px">
+
+  <!-- ─── Header: large title + theme toggle ─── -->
+  <header style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--c-green);box-shadow:0 0 0 3px {{ greenSoft }};position:relative">
+          <span style="position:absolute;inset:0;border-radius:50%;background:var(--c-green);animation:pulse 2.5s infinite"></span>
+        </span>
+        <span class="ar" style="font-size:12px;font-weight:600;color:var(--label-2);letter-spacing:.02em">محفوظ تلقائياً</span>
+      </div>
+      <h1 class="ar" style="font-size:36px;font-weight:800;color:var(--label);letter-spacing:-.025em;line-height:1.05">حاسبة الدينار</h1>
+      <p class="ar" style="font-size:15px;font-weight:400;color:var(--label-2);margin-top:4px;line-height:1.4">احسب مجموع محفظتك النقدية بأناقة</p>
+    </div>
+
+    <!-- Theme toggle (Apple segmented control: Auto / Light / Dark) -->
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+      <div role="radiogroup" aria-label="السمة" style="display:flex;align-items:stretch;background:var(--press-bg);border-radius:11px;padding:3px;gap:0;height:36px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
+        <button onClick="{{ onAuto }}" aria-checked="{{ isAuto }}" role="radio" class="ar" style="display:flex;align-items:center;gap:5px;padding:0 12px;border-radius:8px;font-size:12px;font-weight:600;color:{{ autoColor }};background:{{ autoBg }};transition:all .25s cubic-bezier(.16,1,.3,1);height:30px" style-hover="opacity:.85">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 3v18" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor"/></svg>
+          تلقائي
+        </button>
+        <button onClick="{{ onLight }}" aria-checked="{{ isLight }}" role="radio" aria-label="فاتح" style="display:flex;align-items:center;justify-content:center;padding:0 12px;border-radius:8px;color:{{ lightColor }};background:{{ lightBg }};transition:all .25s cubic-bezier(.16,1,.3,1);height:30px" style-hover="opacity:.85">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M19.07 4.93l-1.41 1.41M6.34 17.66l-1.41 1.41M19.07 19.07l-1.41-1.41M6.34 6.34L4.93 4.93" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <button onClick="{{ onDark }}" aria-checked="{{ isDark }}" role="radio" aria-label="داكن" style="display:flex;align-items:center;justify-content:center;padding:0 12px;border-radius:8px;color:{{ darkColor }};background:{{ darkBg }};transition:all .25s cubic-bezier(.16,1,.3,1);height:30px" style-hover="opacity:.85">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <button onClick="{{ onReset }}" class="ar" style="display:inline-flex;align-items:center;gap:6px;padding:0 14px;height:36px;border-radius:11px;background:{{ resetBg }};border:1px solid {{ resetBorder }};color:{{ resetColor }};font-weight:600;font-size:13px;transition:all .2s;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)" style-hover="opacity:.85">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        تصفير
+      </button>
+    </div>
+  </header>
+
+  <!-- ─── HERO Wallet card ─── -->
+  <section style="position:relative;border-radius:28px;overflow:hidden;margin-bottom:8px;box-shadow:0 24px 60px -24px rgba(0,0,0,.5),0 4px 16px -4px rgba(0,0,0,.2)">
+    <!-- gold pinstripe -->
+    <div style="height:3px;background:linear-gradient(90deg,var(--c-orange),var(--c-yellow),var(--c-orange))"></div>
+
+    <div style="position:relative;padding:36px 38px 30px;background:var(--hero-bg);color:#fff">
+      <!-- Apple-style colored glows -->
+      <div style="position:absolute;top:-100px;left:-60px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,var(--hero-glow-1),transparent 60%);filter:blur(40px);pointer-events:none"></div>
+      <div style="position:absolute;bottom:-120px;right:-70px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,var(--hero-glow-2),transparent 60%);filter:blur(42px);pointer-events:none"></div>
+      <!-- subtle grid -->
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;mask-image:radial-gradient(ellipse 75% 60% at 50% 50%, black, transparent)"></div>
+
+      <div style="position:relative">
+        <!-- Top row -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#FF9500,#FFCC00);display:grid;place-items:center;box-shadow:0 8px 18px -6px rgba(255,149,0,.55),inset 0 1px 0 rgba(255,255,255,.3)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M16 6H10a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6H7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div class="ar" style="font-size:13px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.02em">المحفظة النقدية</div>
+              <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.4);margin-top:1px;letter-spacing:.06em">IRAQI DINAR · IQD</div>
+            </div>
+          </div>
+          <!-- Apple-style glass badge -->
+          <div style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;background:rgba(255,255,255,.08);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:.5px solid rgba(255,255,255,.14)">
+            <span style="width:5px;height:5px;border-radius:50%;background:#FFCC00"></span>
+            <span class="ar" style="font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.06em">د.ع</span>
+          </div>
+        </div>
+
+        <!-- Big number -->
+        <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap">
+          <div class="num" style="font-size:clamp(60px,9vw,96px);font-weight:700;line-height:.92;color:#fff;letter-spacing:-.036em">{{ totalDisplay }}</div>
+          <div class="ar" style="font-size:24px;font-weight:600;color:rgba(255,255,255,.5)">دينار</div>
+        </div>
+        <div class="ar" style="margin-top:12px;font-size:14px;color:rgba(255,255,255,.6);font-weight:500;line-height:1.5;max-width:640px">{{ totalInWords }}</div>
+
+        <!-- Stats inline row (apple wallet-style) -->
+        <div style="margin-top:28px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;padding-top:22px;border-top:.5px solid rgba(255,255,255,.12)">
+          <div style="padding:0 18px 0 0">
+            <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.16em;text-transform:uppercase">الأوراق</div>
+            <div class="num" style="font-size:24px;font-weight:700;color:#fff;margin-top:4px;line-height:1">{{ totalPiecesDisplay }}</div>
+          </div>
+          <div style="padding:0 18px;border-right:.5px solid rgba(255,255,255,.12)">
+            <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.16em;text-transform:uppercase">الفئات</div>
+            <div class="num" style="font-size:24px;font-weight:700;color:#fff;margin-top:4px;line-height:1">{{ activeCountDisplay }}<span style="color:rgba(255,255,255,.3);font-size:18px">/7</span></div>
+          </div>
+          <div style="padding:0 18px;border-right:.5px solid rgba(255,255,255,.12)">
+            <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.16em;text-transform:uppercase">المتوسط</div>
+            <div class="num" style="font-size:24px;font-weight:700;color:#fff;margin-top:4px;line-height:1">{{ avgValueDisplay }}</div>
+          </div>
+        </div>
+
+        <!-- Distribution bar -->
+        <div style="margin-top:24px">
+          <sc-if value="{{ hasAny }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="display:flex;height:10px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06);gap:2px">
+                <sc-for list="{{ segments }}" as="s" hint-placeholder-count="3">
+                  <div style="height:100%;flex-basis:{{ s.pct }}%;background:{{ s.color }};transition:flex-basis .6s cubic-bezier(.16,1,.3,1)"></div>
+                </sc-for>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:12px">
+                <sc-for list="{{ segments }}" as="s" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:6px">
+                    <span style="width:7px;height:7px;border-radius:50%;background:{{ s.color }}"></span>
+                    <span class="num" style="font-size:11px;font-weight:700;color:#fff">{{ s.label }}</span>
+                    <span class="num" style="font-size:11px;font-weight:500;color:rgba(255,255,255,.45)">{{ s.pctLabel }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="height:10px;border-radius:999px;background:rgba(255,255,255,.06)"></div>
+            <div class="ar" style="font-size:12px;color:rgba(255,255,255,.45);margin-top:10px">في انتظار أول إدخال — ابدأ من البطاقات أدناه</div>
+          </sc-if>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Section: Denominations ─── -->
+  <div class="section-h">
+    <div style="display:flex;align-items:center;gap:10px">
+      <h2 class="ar" style="font-size:22px;font-weight:800;color:var(--label);letter-spacing:-.015em">الفئات النقدية</h2>
+      <span class="num" style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 8px;border-radius:999px;background:var(--press-bg);color:var(--label-2);font-size:12px;font-weight:700">7</span>
+    </div>
+    <div class="ar" style="font-size:13px;color:var(--label-3);font-weight:500">من 250 إلى 50,000</div>
+  </div>
+
+  <section class="stagger" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px">
+    <sc-for list="{{ denominations }}" as="d" hint-placeholder-count="7">
+      <dc-import name="DenomCardV7" denom="{{ d }}" count="{{ d.count }}" on-change="{{ d.onChange }}" hint-size="100%,280px"></dc-import>
+    </sc-for>
+  </section>
+
+  <!-- ─── Insights ─── -->
+  <sc-if value="{{ hasAny }}" hint-placeholder-val="{{ true }}">
+    <div class="section-h">
+      <h2 class="ar" style="font-size:22px;font-weight:800;color:var(--label);letter-spacing:-.015em">رؤى المحفظة</h2>
+      <div class="ar" style="font-size:13px;color:var(--label-3);font-weight:500">تحديث فوري</div>
+    </div>
+    <section class="inset" style="backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:var(--glass-shadow)">
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;min-height:64px">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--c-orange);display:grid;place-items:center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z" fill="#fff"/></svg>
+          </div>
+          <div>
+            <div class="ar" style="font-size:16px;font-weight:600;color:var(--label);letter-spacing:-.005em">أعلى فئة قيمةً</div>
+            <div class="ar" style="font-size:13px;color:var(--label-2);margin-top:1px">الفئة صاحبة الحصة الأكبر</div>
+          </div>
+        </div>
+        <div style="text-align:left">
+          <div class="num" style="font-size:16px;font-weight:700;color:var(--label)">{{ topSegLabel }}</div>
+          <div class="num" style="font-size:13px;color:var(--label-2);font-weight:500;margin-top:1px">{{ topSegPct }}</div>
+        </div>
+      </div>
+
+      <div style="height:.5px;background:var(--separator);margin-right:70px"></div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;min-height:64px">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--c-indigo);display:grid;place-items:center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12h4l3-9 4 18 3-9h4" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="ar" style="font-size:16px;font-weight:600;color:var(--label);letter-spacing:-.005em">إجمالي الأوراق</div>
+            <div class="ar" style="font-size:13px;color:var(--label-2);margin-top:1px">العدد الكلي عبر جميع الفئات</div>
+          </div>
+        </div>
+        <div class="num" style="font-size:16px;font-weight:700;color:var(--label)">{{ totalPiecesDisplay }}</div>
+      </div>
+
+      <div style="height:.5px;background:var(--separator);margin-right:70px"></div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;min-height:64px">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--c-pink);display:grid;place-items:center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 3v18h18" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M7 16l4-4 3 3 5-6" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div class="ar" style="font-size:16px;font-weight:600;color:var(--label);letter-spacing:-.005em">متوسط قيمة الورقة</div>
+            <div class="ar" style="font-size:13px;color:var(--label-2);margin-top:1px">الإجمالي ÷ عدد الأوراق</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:4px">
+          <span class="num" style="font-size:16px;font-weight:700;color:var(--label)">{{ avgValueDisplay }}</span>
+          <span class="ar" style="font-size:13px;color:var(--label-2);font-weight:500">د.ع</span>
+        </div>
+      </div>
+
+      <div style="height:.5px;background:var(--separator);margin-right:70px"></div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;min-height:64px">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:36px;height:36px;border-radius:10px;background:var(--c-mint);display:grid;place-items:center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="2.4"/><path d="M12 7v5l3 2" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="ar" style="font-size:16px;font-weight:600;color:var(--label);letter-spacing:-.005em">آخر تعديل</div>
+            <div class="ar" style="font-size:13px;color:var(--label-2);margin-top:1px">يُحفظ في هذا الجهاز فقط</div>
+          </div>
+        </div>
+        <div class="ar num" style="font-size:14px;font-weight:600;color:var(--label-2)">{{ lastUpdated }}</div>
+      </div>
+
+    </section>
+  </sc-if>
+
+  <footer class="ar" style="margin-top:48px;text-align:center;font-size:12px;color:var(--label-3);font-weight:500">
+    صُمِّمت وفق Apple HIG · iOS 17 · بغداد، العراق
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  STORAGE_KEY = 'iqd-calc-counts-v7-final';
+  TS_KEY = 'iqd-calc-ts-v7-final';
+  THEME_KEY = 'iqd-calc-theme-v7';
+
+  DENOMS = [
+    // Color harmony — cool → warm gradient as value increases
+    { value: 250,    name: '250',    label: 'مئتان وخمسون',     base: '#00C7BE', dark: '#00897B' }, // mint
+    { value: 500,    name: '500',    label: 'خمسمئة',           base: '#30B0C7', dark: '#0277BD' }, // teal
+    { value: 1000,   name: '1,000',  label: 'ألف',               base: '#007AFF', dark: '#0040DD' }, // blue
+    { value: 5000,   name: '5,000',  label: 'خمسة آلاف',         base: '#5856D6', dark: '#3F3DB3' }, // indigo
+    { value: 10000,  name: '10,000', label: 'عشرة آلاف',         base: '#AF52DE', dark: '#7B2EAD' }, // purple
+    { value: 25000,  name: '25,000', label: 'خمسة وعشرون ألف',   base: '#FF9500', dark: '#D97700' }, // orange
+    { value: 50000,  name: '50,000', label: 'خمسون ألف',         base: '#FF3B30', dark: '#C8201A' }, // red
+  ];
+
+  state = { counts: {}, lastUpdatedAt: null, theme: 'auto', systemDark: false };
+
+  componentDidMount() {
+    // counts
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      const ts  = localStorage.getItem(this.TS_KEY);
+      const next = {};
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') next.counts = parsed;
+      }
+      if (ts) next.lastUpdatedAt = Number(ts) || null;
+      if (Object.keys(next).length) this.setState(next);
+    } catch(e){}
+
+    // theme
+    let theme = 'auto';
+    try { theme = localStorage.getItem(this.THEME_KEY) || 'auto'; } catch(e){}
+    this._mql = window.matchMedia('(prefers-color-scheme: dark)');
+    this._onSysChange = () => {
+      this.setState({ systemDark: this._mql.matches });
+      if (this.state.theme === 'auto') this.applyTheme('auto');
+    };
+    this._mql.addEventListener?.('change', this._onSysChange);
+    this.setState({ theme, systemDark: this._mql.matches }, () => this.applyTheme(theme));
+
+    // tick for last-updated relative time
+    this._tick = setInterval(() => this.forceUpdate(), 60000);
+  }
+
+  componentWillUnmount() {
+    if (this._tick) clearInterval(this._tick);
+    if (this._mql && this._onSysChange) this._mql.removeEventListener?.('change', this._onSysChange);
+    if (this._holdT) clearInterval(this._holdT);
+  }
+
+  applyTheme(theme) {
+    const root = document.documentElement;
+    const wantDark = theme === 'dark' || (theme === 'auto' && this._mql?.matches);
+    if (wantDark) root.setAttribute('data-theme', 'dark');
+    else root.removeAttribute('data-theme');
+  }
+
+  setTheme = (theme) => {
+    this.setState({ theme });
+    try { localStorage.setItem(this.THEME_KEY, theme); } catch(e){}
+    this.applyTheme(theme);
+  };
+
+  persist(counts) {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(counts));
+      const ts = Date.now();
+      localStorage.setItem(this.TS_KEY, String(ts));
+      this.setState({ lastUpdatedAt: ts });
+    } catch(e){}
+  }
+
+  setCount(value, n) {
+    const next = { ...this.state.counts };
+    const clean = Math.max(0, Math.min(99999, Math.floor(Number(n) || 0)));
+    if (clean === 0) delete next[value]; else next[value] = clean;
+    this.setState({ counts: next });
+    this.persist(next);
+  }
+
+  reset = () => {
+    if (Object.keys(this.state.counts).length === 0) return;
+    this.setState({ counts: {} });
+    this.persist({});
+  };
+
+  fmt(n){ return Number(Math.round(n)).toLocaleString('en-US'); }
+
+  toArabicWords(n) {
+    if (!n) return 'لم يتم إدخال أي مبلغ بعد';
+    const units = [{v:1e9,s:'مليار'},{v:1e6,s:'مليون'},{v:1e3,s:'ألف'}];
+    let parts = []; let rem = n;
+    for (const u of units) {
+      if (rem >= u.v) {
+        const c = Math.floor(rem/u.v);
+        rem = rem % u.v;
+        parts.push(`${this.fmt(c)} ${u.s}`);
+      }
+    }
+    if (rem > 0) parts.push(`${this.fmt(rem)}`);
+    return parts.join(' و') + ' دينار عراقي';
+  }
+
+  relativeTime(ts) {
+    if (!ts) return '—';
+    const diffMs = Date.now() - ts;
+    const sec = Math.floor(diffMs / 1000);
+    if (sec < 10) return 'الآن';
+    if (sec < 60) return `قبل ${sec} ثانية`;
+    const min = Math.floor(sec / 60);
+    if (min < 60) return `قبل ${min} دقيقة`;
+    const hr = Math.floor(min / 60);
+    if (hr < 24) return `قبل ${hr} ساعة`;
+    const days = Math.floor(hr / 24);
+    if (days < 7) return `قبل ${days} يوم`;
+    return new Date(ts).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+  }
+
+  renderVals() {
+    const counts = this.state.counts;
+    const denominations = this.DENOMS.map(d => ({
+      ...d,
+      count: counts[d.value] || 0,
+      onChange: (n) => this.setCount(d.value, n),
+    }));
+
+    const total = denominations.reduce((s, d) => s + d.value * d.count, 0);
+    const totalPieces = denominations.reduce((s, d) => s + d.count, 0);
+    const activeCount = denominations.filter(d => d.count > 0).length;
+    const avg = totalPieces > 0 ? total / totalPieces : 0;
+
+    const segments = denominations
+      .filter(d => d.count > 0)
+      .map(d => {
+        const amount = d.value * d.count;
+        const pct = total > 0 ? (amount / total) * 100 : 0;
+        return {
+          color: d.base,
+          pct: pct.toFixed(2),
+          pctLabel: `${pct.toFixed(1)}%`,
+          label: d.name,
+          amount,
+        };
+      })
+      .sort((a,b) => parseFloat(b.pct) - parseFloat(a.pct));
+
+    const top = segments[0];
+
+    // theme button states
+    const theme = this.state.theme || 'auto';
+    const pillBg = 'var(--surface)';
+    const pillSh = '0 1px 3px rgba(0,0,0,.08),0 2px 8px rgba(0,0,0,.04)';
+    const dim = 'transparent';
+    const dimColor = 'var(--label-2)';
+    const onColor = 'var(--label)';
+    const buttonOn = (active) => active ? { bg: pillBg, color: onColor, shadow: pillSh } : { bg: dim, color: dimColor, shadow: 'none' };
+    const a = buttonOn(theme === 'auto');
+    const l = buttonOn(theme === 'light');
+    const dk = buttonOn(theme === 'dark');
+
+    return {
+      denominations,
+      totalDisplay: this.fmt(total),
+      totalPiecesDisplay: this.fmt(totalPieces),
+      activeCountDisplay: activeCount,
+      avgValueDisplay: this.fmt(avg),
+      totalInWords: this.toArabicWords(total),
+      segments,
+      hasAny: total > 0,
+      isEmpty: total === 0,
+      topSegLabel: top ? `${top.label} د.ع` : '—',
+      topSegPct: top ? top.pctLabel : '—',
+      lastUpdated: this.relativeTime(this.state.lastUpdatedAt),
+      greenSoft: 'rgba(52,199,89,.18)',
+
+      // theme controls
+      isAuto: theme === 'auto', isLight: theme === 'light', isDark: theme === 'dark',
+      autoBg: a.bg, autoColor: a.color,
+      lightBg: l.bg, lightColor: l.color,
+      darkBg: dk.bg, darkColor: dk.color,
+      onAuto: () => this.setTheme('auto'),
+      onLight: () => this.setTheme('light'),
+      onDark: () => this.setTheme('dark'),
+
+      // reset button
+      resetBg: total > 0 ? 'rgba(255,59,48,.12)' : 'var(--press-bg)',
+      resetBorder: total > 0 ? 'rgba(255,59,48,.25)' : 'transparent',
+      resetColor: total > 0 ? 'var(--c-red)' : 'var(--label-2)',
+      onReset: this.reset,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --paper:#F5F2EC;
+    --paper-2:#EFEAE0;
+    --paper-3:#E8E2D5;
+    --ink:#1C1B19;
+    --ink-2:#5A574F;
+    --ink-3:#8E8A7E;
+    --ink-4:#B8B3A5;
+    --line:#DDD7C8;
+    --line-soft:#E8E4DA;
+    --gold:#B89968;
+    --gold-2:#967B4D;
+    --champagne:#D9C8A4;
+
+    --c-250:#6B9D7F;
+    --c-500:#5B9EA4;
+    --c-1k:#354F7E;
+    --c-5k:#7E4B8A;
+    --c-10k:#9B3D43;
+    --c-25k:#C99340;
+    --c-50k:#1C1B19;
+  }
+  html,body{
+    background:var(--paper);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Cairo',system-ui,sans-serif;
+    color:var(--ink);
+    direction:rtl;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(900px 600px at 90% 0%, rgba(184,153,104,.06), transparent 60%),
+      radial-gradient(700px 500px at 0% 100%, rgba(155,61,67,.04), transparent 60%),
+      var(--paper);
+    background-attachment:fixed;
+  }
+  /* paper grain noise */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 .1  0 0 0 0 .1  0 0 0 0 .08  0 0 0 .05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode:multiply;
+  }
+  input[type=number]{-moz-appearance:textfield}
+  input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;-webkit-tap-highlight-color:transparent}
+  .serif{font-family:'Instrument Serif',Georgia,serif;font-weight:400}
+  .num{font-feature-settings:'tnum' 1,'ss01' 1,'cv11' 1;font-variant-numeric:tabular-nums;letter-spacing:-.022em}
+  .ar{font-family:'Cairo',-apple-system,system-ui,sans-serif}
+  .eyebrow{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--ink-3);letter-spacing:.22em;text-transform:uppercase}
+  .rule{height:1px;background:linear-gradient(90deg,transparent,var(--line) 20%,var(--line) 80%,transparent)}
+  @keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</helmet>
+
+<div style="position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:36px 32px 96px">
+
+  <!-- ─── Editorial header ─── -->
+  <header style="display:flex;align-items:center;justify-content:space-between;padding-bottom:24px;border-bottom:1px solid var(--line)">
+    <div style="display:flex;align-items:center;gap:14px">
+      <!-- Monogram -->
+      <div style="position:relative;width:44px;height:44px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;background:var(--paper);transition:transform .3s" style-hover="transform:rotate(-8deg)">
+        <span class="serif" style="font-size:20px;font-style:italic;color:var(--ink);line-height:1">د.ع</span>
+        <span style="position:absolute;inset:-3px;border-radius:50%;border:.5px solid var(--ink-4)"></span>
+      </div>
+      <div>
+        <div class="eyebrow">ATELIER · ٢٠٢٦</div>
+        <h1 class="ar" style="font-size:18px;font-weight:700;color:var(--ink);letter-spacing:-.005em;line-height:1.2;margin-top:4px">دفتر حسابات الدينار العراقي</h1>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(245,242,236,.6)">
+        <span style="width:5px;height:5px;border-radius:50%;background:var(--c-250)"></span>
+        <span class="ar" style="font-size:12px;font-weight:500;color:var(--ink-2)">محفوظ</span>
+      </div>
+      <button onClick="{{ onReset }}" class="ar" style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1px solid {{ resetBorder }};background:transparent;color:{{ resetColor }};font-weight:500;font-size:13px;transition:all .2s" style-hover="background:{{ resetHoverBg }};border-color:{{ resetHoverBorder }}">
+        تصفير الدفتر
+      </button>
+    </div>
+  </header>
+
+  <!-- ─── HERO TOTAL — editorial centerpiece ─── -->
+  <section style="position:relative;padding:80px 0 64px;text-align:center">
+    <div class="eyebrow ar" style="font-family:'Cairo';margin-bottom:24px">الإجمالي المرصود</div>
+
+    <!-- Big serif number -->
+    <div style="position:relative;display:inline-flex;align-items:baseline;gap:18px;justify-content:center">
+      <span class="serif num" style="font-size:clamp(96px,14vw,184px);font-weight:400;line-height:.85;color:var(--ink);letter-spacing:-.04em;font-feature-settings:'tnum' 1">{{ totalDisplay }}</span>
+      <span class="serif ar" style="font-size:32px;font-style:italic;color:var(--ink-3);font-weight:400">د.ع</span>
+    </div>
+
+    <!-- spelled out -->
+    <div class="ar" style="margin-top:28px;font-size:16px;color:var(--ink-2);font-weight:400;max-width:640px;margin-right:auto;margin-left:auto;line-height:1.6">
+      <span class="serif" style="font-style:italic;color:var(--gold-2);margin-left:6px">«</span>{{ totalInWords }}<span class="serif" style="font-style:italic;color:var(--gold-2);margin-right:6px">»</span>
+    </div>
+
+    <!-- decorative gold rule -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:36px">
+      <div style="width:60px;height:.5px;background:var(--gold)"></div>
+      <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="1.5" fill="{{ goldDot }}"/></svg>
+      <div style="width:60px;height:.5px;background:var(--gold)"></div>
+    </div>
+  </section>
+
+  <!-- ─── Distribution + Stats panel ─── -->
+  <section style="display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:center;padding:24px 0 56px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+
+    <!-- Ring chart (SVG conic-style) -->
+    <div style="display:flex;align-items:center;gap:24px">
+      <div style="position:relative;width:180px;height:180px;flex-shrink:0">
+        <svg width="180" height="180" viewBox="0 0 180 180" style="transform:rotate(-90deg);overflow:visible">
+          <!-- background ring -->
+          <circle cx="90" cy="90" r="72" fill="none" stroke="var(--paper-3)" stroke-width="20"/>
+          <!-- Segments -->
+          <sc-for list="{{ ringSegments }}" as="seg" hint-placeholder-count="3">
+            <circle cx="90" cy="90" r="72" fill="none" stroke="{{ seg.color }}" stroke-width="20" stroke-dasharray="{{ seg.dash }}" stroke-dashoffset="{{ seg.offset }}" style="transition:stroke-dasharray .6s cubic-bezier(.4,0,.2,1),stroke-dashoffset .6s cubic-bezier(.4,0,.2,1)"></circle>
+          </sc-for>
+        </svg>
+        <!-- center label -->
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+          <div class="ar" style="font-size:10px;font-weight:600;color:var(--ink-3);letter-spacing:.12em">فئات</div>
+          <div class="serif" style="font-size:48px;font-weight:400;color:var(--ink);line-height:1;margin-top:2px">{{ activeCountDisplay }}</div>
+          <div class="ar" style="font-size:11px;color:var(--ink-3);margin-top:2px">من ٧</div>
+        </div>
+      </div>
+
+      <!-- ring legend (compact) -->
+      <div style="display:flex;flex-direction:column;gap:8px;flex:1;min-width:0">
+        <sc-if value="{{ hasAny }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ ringSegments }}" as="seg" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px">
+                <span style="width:8px;height:8px;border-radius:2px;background:{{ seg.color }};flex-shrink:0"></span>
+                <span class="num ar" style="font-weight:600;color:var(--ink);min-width:50px">{{ seg.label }}</span>
+                <span class="num" style="color:var(--ink-3);font-weight:500;font-size:11px">{{ seg.pctLabel }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div class="ar" style="font-size:13px;color:var(--ink-3);font-weight:400;line-height:1.5;font-style:italic" class-extra="serif">
+            <span class="serif" style="font-style:italic">«</span> الدفتر فارغ — ابدأ بإضافة الأوراق أدناه <span class="serif" style="font-style:italic">»</span>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- Stats column -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:0;border-right:1px solid var(--line)">
+      <div style="padding:12px 24px;text-align:right">
+        <div class="eyebrow ar" style="font-family:'Cairo'">إجمالي الأوراق</div>
+        <div class="serif num" style="font-size:42px;font-weight:400;color:var(--ink);line-height:1;margin-top:8px">{{ totalPiecesDisplay }}</div>
+        <div class="ar" style="font-size:11px;color:var(--ink-3);margin-top:4px">ورقة نقدية</div>
+      </div>
+      <div style="padding:12px 24px;text-align:right;border-right:1px dashed var(--line)">
+        <div class="eyebrow ar" style="font-family:'Cairo'">متوسط الورقة</div>
+        <div class="serif num" style="font-size:42px;font-weight:400;color:var(--ink);line-height:1;margin-top:8px">{{ avgValueDisplay }}</div>
+        <div class="ar" style="font-size:11px;color:var(--ink-3);margin-top:4px">دينار / ورقة</div>
+      </div>
+      <div style="padding:12px 24px;text-align:right;border-right:1px dashed var(--line)">
+        <div class="eyebrow ar" style="font-family:'Cairo'">أعلى فئة</div>
+        <div class="serif num" style="font-size:42px;font-weight:400;color:{{ topColor }};line-height:1;margin-top:8px">{{ topLabel }}</div>
+        <div class="ar" style="font-size:11px;color:var(--ink-3);margin-top:4px">{{ topPct }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── LEDGER: denomination rows ─── -->
+  <section style="margin-top:48px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px">
+      <div>
+        <div class="eyebrow">LEDGER</div>
+        <h2 class="ar" style="font-size:28px;font-weight:300;color:var(--ink);margin-top:4px;letter-spacing:-.01em">
+          <span class="serif" style="font-style:italic;color:var(--gold-2)">دفتر</span> الأوراق النقدية
+        </h2>
+      </div>
+      <div class="ar" style="font-size:12px;color:var(--ink-3);font-weight:500;text-align:left">
+        <div>اضغط <kbd style="display:inline-block;padding:1px 6px;border:1px solid var(--line);border-radius:4px;font-family:inherit;font-size:11px;color:var(--ink-2);background:var(--paper-2)">+</kbd> للإضافة</div>
+        <div style="margin-top:2px">أو اكتب العدد مباشرة</div>
+      </div>
+    </div>
+
+    <!-- Ledger rows -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ denominations }}" as="d" hint-placeholder-count="7">
+        <dc-import name="AtelierBanknoteRow" denom="{{ d }}" count="{{ d.count }}" on-change="{{ d.onChange }}" hint-size="100%,96px"></dc-import>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ─── Editorial footer ─── -->
+  <footer style="margin-top:64px;padding-top:24px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between">
+    <div class="ar" style="font-size:12px;color:var(--ink-3)">
+      <span class="serif" style="font-style:italic;color:var(--ink-2)">Atelier</span> · دفتر حسابات شخصي · يُحفظ تلقائياً
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ink-3);letter-spacing:.06em">
+      <div style="width:24px;height:.5px;background:var(--gold)"></div>
+      <span>BAGHDAD · IQ</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  STORAGE_KEY = 'iqd-calc-counts-v4-atelier';
+  DENOMS = [
+    { value: 250,    name: '250',    label: 'مئتان وخمسون',     color: '#6B9D7F', tone: 'sage'      },
+    { value: 500,    name: '500',    label: 'خمسمئة',           color: '#5B9EA4', tone: 'teal'      },
+    { value: 1000,   name: '1,000',  label: 'ألف',               color: '#354F7E', tone: 'navy'      },
+    { value: 5000,   name: '5,000',  label: 'خمسة آلاف',         color: '#7E4B8A', tone: 'plum'      },
+    { value: 10000,  name: '10,000', label: 'عشرة آلاف',         color: '#9B3D43', tone: 'burgundy'  },
+    { value: 25000,  name: '25,000', label: 'خمسة وعشرون ألف',   color: '#C99340', tone: 'amber'     },
+    { value: 50000,  name: '50,000', label: 'خمسون ألف',         color: '#1C1B19', tone: 'noir'      }, // black w/ gold
+  ];
+
+  state = { counts: {} };
+
+  componentDidMount() {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object') this.setState({ counts: parsed });
+      }
+    } catch(e){}
+  }
+  persist(counts) { try { localStorage.setItem(this.STORAGE_KEY, JSON.stringify(counts)); } catch(e){} }
+  setCount(value, n) {
+    const next = { ...this.state.counts };
+    const clean = Math.max(0, Math.min(99999, Math.floor(Number(n) || 0)));
+    if (clean === 0) delete next[value]; else next[value] = clean;
+    this.setState({ counts: next });
+    this.persist(next);
+  }
+  reset = () => {
+    if (Object.keys(this.state.counts).length === 0) return;
+    this.setState({ counts: {} });
+    this.persist({});
+  };
+  fmt(n){ return Number(Math.round(n)).toLocaleString('en-US'); }
+
+  toArabicWords(n) {
+    if (!n) return 'في انتظار أول قيد في الدفتر';
+    const units = [
+      { v: 1e9, s: 'مليار' },
+      { v: 1e6, s: 'مليون' },
+      { v: 1e3, s: 'ألف' },
+    ];
+    let parts = [];
+    let rem = n;
+    for (const u of units) {
+      if (rem >= u.v) {
+        const c = Math.floor(rem / u.v);
+        rem = rem % u.v;
+        parts.push(`${this.fmt(c)} ${u.s}`);
+      }
+    }
+    if (rem > 0) parts.push(`${this.fmt(rem)}`);
+    return parts.join(' و') + ' دينار عراقي لا غير';
+  }
+
+  renderVals() {
+    const counts = this.state.counts;
+    const denominations = this.DENOMS.map(d => ({
+      ...d,
+      count: counts[d.value] || 0,
+      onChange: (n) => this.setCount(d.value, n),
+    }));
+
+    const total = denominations.reduce((s, d) => s + d.value * d.count, 0);
+    const totalPieces = denominations.reduce((s, d) => s + d.count, 0);
+    const activeCount = denominations.filter(d => d.count > 0).length;
+    const avg = totalPieces > 0 ? total / totalPieces : 0;
+
+    // Ring chart segments — compute stroke-dasharray for r=72 circle (C=2πr ≈ 452.39)
+    const C = 2 * Math.PI * 72;
+    let cumPct = 0;
+    const ringSegments = denominations
+      .filter(d => d.count > 0)
+      .map(d => {
+        const amount = d.value * d.count;
+        const pct = total > 0 ? amount / total : 0;
+        return { d, amount, pct };
+      })
+      .sort((a,b) => b.pct - a.pct)
+      .map(({d, amount, pct}) => {
+        const segLen = C * pct;
+        // tiny gap of 2 between segments
+        const gap = pct > 0.02 ? 2 : 0;
+        const visible = Math.max(0, segLen - gap);
+        const dash = `${visible} ${C - visible}`;
+        const offset = -cumPct * C;
+        cumPct += pct;
+        return {
+          color: d.color === '#1C1B19' ? '#1C1B19' : d.color,
+          dash,
+          offset: String(offset),
+          label: d.name,
+          pctLabel: `${(pct*100).toFixed(1)}%`,
+        };
+      });
+
+    const top = ringSegments[0];
+
+    return {
+      denominations,
+      totalDisplay: this.fmt(total),
+      totalPiecesDisplay: this.fmt(totalPieces),
+      activeCountDisplay: activeCount,
+      avgValueDisplay: this.fmt(avg),
+      totalInWords: this.toArabicWords(total),
+      ringSegments,
+      hasAny: total > 0,
+      isEmpty: total === 0,
+      topLabel: top ? top.label : '—',
+      topPct: top ? top.pctLabel : 'لا يوجد',
+      topColor: top ? top.color : 'var(--ink-3)',
+      goldDot: total > 0 ? '#B89968' : '#B8B3A5',
+      resetColor: total > 0 ? '#9B3D43' : 'var(--ink-3)',
+      resetBorder: total > 0 ? 'rgba(155,61,67,.4)' : 'var(--line)',
+      resetHoverBg: total > 0 ? 'rgba(155,61,67,.08)' : 'var(--paper-2)',
+      resetHoverBorder: total > 0 ? '#9B3D43' : 'var(--ink-4)',
+      onReset: this.reset,
+    };
+  }
+}
+</script>
+</body>
+</html>
