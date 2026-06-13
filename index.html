@@ -14,34 +14,34 @@
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
 
-  /* ─── LIGHT (iOS 27/28 Liquid Glass) ─── */
+  /* ─── LIGHT — ألوان مشرقة وواضحة ─── */
   :root{
-    --bg:#F2F2F7;
-    --bg-2:#E8E8ED;
+    --bg:#FAFBFF;
+    --bg-2:#F0F2F8;
     --surface:#FFFFFF;
-    --surface-2:#F7F7FA;
-    --glass-bg:rgba(255,255,255,.55);
-    --glass-bg-strong:rgba(255,255,255,.78);
-    --glass-bg-hero:rgba(255,255,255,.12);
-    --glass-border:rgba(0,0,0,.07);
-    --glass-border-strong:rgba(0,0,0,.1);
-    --glass-blur:40px;
-    --glass-saturate:180%;
-    --glass-shadow:0 8px 40px -12px rgba(0,0,0,.14),0 1px 0 rgba(255,255,255,.8) inset;
-    --glass-shadow-lg:0 24px 64px -20px rgba(0,0,0,.2);
-    --label:#000000;
-    --label-2:rgba(60,60,67,.6);
-    --label-3:rgba(60,60,67,.3);
-    --label-4:rgba(60,60,67,.18);
-    --separator:rgba(60,60,67,.18);
-    --separator-soft:rgba(60,60,67,.08);
-    --hero-bg:linear-gradient(145deg,#1a1a1e 0%,#2a2a30 45%,#1c1c22 100%);
-    --hero-glow-1:rgba(255,149,0,.34);
-    --hero-glow-2:rgba(94,92,230,.38);
-    --hero-glow-3:rgba(0,122,255,.22);
-    --body-bg-grad-1:rgba(0,122,255,.06);
-    --body-bg-grad-2:rgba(255,55,95,.04);
-    --body-bg-grad-3:rgba(175,82,222,.04);
+    --surface-2:#F8F9FC;
+    --glass-bg:rgba(255,255,255,.92);
+    --glass-bg-strong:#FFFFFF;
+    --glass-bg-hero:rgba(255,255,255,.2);
+    --glass-border:rgba(0,0,0,.06);
+    --glass-border-strong:rgba(0,0,0,.08);
+    --glass-blur:32px;
+    --glass-saturate:200%;
+    --glass-shadow:0 4px 24px -6px rgba(0,0,0,.08),0 1px 0 rgba(255,255,255,1) inset;
+    --glass-shadow-lg:0 16px 48px -16px rgba(0,0,0,.12);
+    --label:#1D1D1F;
+    --label-2:rgba(30,30,35,.72);
+    --label-3:rgba(30,30,35,.48);
+    --label-4:rgba(30,30,35,.28);
+    --separator:rgba(60,60,67,.12);
+    --separator-soft:rgba(60,60,67,.06);
+    --hero-bg:linear-gradient(135deg,#007AFF 0%,#5856D6 42%,#AF52DE 78%,#FF6482 100%);
+    --hero-glow-1:rgba(255,204,0,.45);
+    --hero-glow-2:rgba(255,255,255,.35);
+    --hero-glow-3:rgba(100,210,255,.4);
+    --body-bg-grad-1:rgba(0,122,255,.14);
+    --body-bg-grad-2:rgba(175,82,222,.12);
+    --body-bg-grad-3:rgba(255,149,0,.1);
     --c-blue:#007AFF;
     --c-mint:#00C7BE;
     --c-teal:#30B0C7;
@@ -53,53 +53,53 @@
     --c-orange:#FF9500;
     --c-yellow:#FFCC00;
     --c-green:#34C759;
-    --press-bg:rgba(120,120,128,.1);
-    --press-bg-2:rgba(120,120,128,.18);
+    --press-bg:rgba(120,120,128,.08);
+    --press-bg-2:rgba(120,120,128,.14);
     --spring:cubic-bezier(.34,1.56,.64,1);
     --ease-out:cubic-bezier(.16,1,.3,1);
   }
 
-  /* ─── DARK (OLED + Liquid Glass) ─── */
+  /* ─── DARK — أوضح وأقل عتمة ─── */
   :root[data-theme="dark"]{
-    --bg:#000000;
-    --bg-2:#0A0A0E;
-    --surface:rgba(28,28,30,.85);
-    --surface-2:rgba(44,44,46,.75);
-    --glass-bg:rgba(255,255,255,.05);
-    --glass-bg-strong:rgba(255,255,255,.09);
-    --glass-bg-hero:rgba(255,255,255,.06);
-    --glass-border:rgba(255,255,255,.1);
-    --glass-border-strong:rgba(255,255,255,.16);
-    --glass-blur:48px;
-    --glass-saturate:200%;
-    --glass-shadow:0 12px 48px -12px rgba(0,0,0,.7),0 1px 0 rgba(255,255,255,.06) inset;
-    --glass-shadow-lg:0 32px 80px -24px rgba(0,0,0,.85);
+    --bg:#1C1C1E;
+    --bg-2:#2C2C2E;
+    --surface:#2C2C2E;
+    --surface-2:#3A3A3C;
+    --glass-bg:rgba(255,255,255,.12);
+    --glass-bg-strong:rgba(255,255,255,.18);
+    --glass-bg-hero:rgba(255,255,255,.1);
+    --glass-border:rgba(255,255,255,.14);
+    --glass-border-strong:rgba(255,255,255,.2);
+    --glass-blur:36px;
+    --glass-saturate:220%;
+    --glass-shadow:0 8px 32px -8px rgba(0,0,0,.45),0 1px 0 rgba(255,255,255,.1) inset;
+    --glass-shadow-lg:0 20px 56px -16px rgba(0,0,0,.55);
     --label:#FFFFFF;
-    --label-2:rgba(235,235,245,.62);
-    --label-3:rgba(235,235,245,.32);
-    --label-4:rgba(235,235,245,.18);
-    --separator:rgba(84,84,88,.55);
-    --separator-soft:rgba(84,84,88,.28);
-    --hero-bg:linear-gradient(145deg,#050508 0%,#12121a 42%,#08080c 100%);
-    --hero-glow-1:rgba(255,159,10,.5);
-    --hero-glow-2:rgba(94,92,230,.55);
-    --hero-glow-3:rgba(10,132,255,.35);
-    --body-bg-grad-1:rgba(10,132,255,.12);
-    --body-bg-grad-2:rgba(255,55,95,.08);
-    --body-bg-grad-3:rgba(175,82,222,.1);
-    --c-blue:#0A84FF;
-    --c-mint:#63E6E2;
-    --c-teal:#40CBE0;
-    --c-cyan:#64D2FF;
-    --c-indigo:#7D7AFF;
-    --c-purple:#DA8FFF;
-    --c-pink:#FF6482;
-    --c-red:#FF6961;
-    --c-orange:#FF9F0A;
-    --c-yellow:#FFD60A;
-    --c-green:#30D158;
-    --press-bg:rgba(120,120,128,.22);
-    --press-bg-2:rgba(120,120,128,.34);
+    --label-2:rgba(255,255,255,.78);
+    --label-3:rgba(255,255,255,.52);
+    --label-4:rgba(255,255,255,.32);
+    --separator:rgba(255,255,255,.14);
+    --separator-soft:rgba(255,255,255,.08);
+    --hero-bg:linear-gradient(135deg,#0A84FF 0%,#7D7AFF 40%,#DA8FFF 75%,#FF6482 100%);
+    --hero-glow-1:rgba(255,214,10,.55);
+    --hero-glow-2:rgba(255,255,255,.2);
+    --hero-glow-3:rgba(100,210,255,.45);
+    --body-bg-grad-1:rgba(10,132,255,.2);
+    --body-bg-grad-2:rgba(218,143,255,.16);
+    --body-bg-grad-3:rgba(255,159,10,.14);
+    --c-blue:#4DA3FF;
+    --c-mint:#5CEFEA;
+    --c-teal:#5DD4F0;
+    --c-cyan:#7DDBFF;
+    --c-indigo:#9B99FF;
+    --c-purple:#E0AAFF;
+    --c-pink:#FF8FA8;
+    --c-red:#FF8A82;
+    --c-orange:#FFB340;
+    --c-yellow:#FFE066;
+    --c-green:#4AE06A;
+    --press-bg:rgba(255,255,255,.14);
+    --press-bg-2:rgba(255,255,255,.22);
   }
 
   html,body{
@@ -293,8 +293,8 @@
     <sc-for list="{{ denominations }}" as="d" hint-placeholder-count="7">
       <div style="position:relative;border-radius:26px;overflow:hidden;transition:all .35s cubic-bezier(.16,1,.3,1);background:{{ d.cardBg }};border:{{ d.cardBorder }};box-shadow:{{ d.cardShadow }};backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%)">
         <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);pointer-events:none;z-index:3;opacity:{{ d.specularOpacity }}"></div>
-        <div style="position:relative;height:148px;background:linear-gradient(145deg,{{ d.accent }} 0%,{{ d.accentMid }} 48%,{{ d.accentDark }} 100%);overflow:hidden">
-          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,.06) 38%,transparent 62%);pointer-events:none"></div>
+        <div style="position:relative;height:148px;background:linear-gradient(135deg,{{ d.accentLight }} 0%,{{ d.accent }} 45%,{{ d.accentVivid }} 100%);overflow:hidden">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.35) 0%,rgba(255,255,255,.08) 40%,transparent 65%);pointer-events:none"></div>
           <div style="position:absolute;top:-40%;right:-20%;width:70%;height:140%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.22),transparent 65%);filter:blur(24px);pointer-events:none"></div>
           <div class="num" style="position:absolute;top:50%;left:8px;transform:translateY(-50%);font-size:clamp(72px,14vw,128px);font-weight:900;color:rgba(255,255,255,.14);letter-spacing:-.06em;line-height:1">{{ d.name }}</div>
           <div style="position:absolute;top:20px;right:22px;display:flex;align-items:center;gap:14px">
@@ -327,7 +327,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg>
             </button>
             <input type="number" min="0" max="99999" value="{{ d.count }}" onInput="{{ d.onInput }}" onFocus="{{ d.onFocus }}" placeholder="0" class="num" style="height:54px;width:100%;border:.5px solid var(--glass-border);border-radius:16px;background:var(--glass-bg-strong);text-align:center;font-size:clamp(22px,4vw,28px);font-weight:800;color:var(--label);outline:none">
-            <button onClick="{{ d.onInc }}" onMouseDown="{{ d.onHoldInc }}" onMouseUp="{{ d.onHoldEnd }}" onMouseLeave="{{ d.onHoldEnd }}" style="height:54px;border-radius:16px;background:linear-gradient(145deg,{{ d.accent }},{{ d.accentDark }});color:#fff;display:grid;place-items:center;box-shadow:0 6px 20px -6px {{ d.accentSoft }}" style-active="transform:scale(.94)">
+            <button onClick="{{ d.onInc }}" onMouseDown="{{ d.onHoldInc }}" onMouseUp="{{ d.onHoldEnd }}" onMouseLeave="{{ d.onHoldEnd }}" style="height:54px;border-radius:16px;background:linear-gradient(145deg,{{ d.accentLight }},{{ d.accentVivid }});color:#fff;display:grid;place-items:center;box-shadow:0 6px 20px -4px {{ d.accentSoft }}" style-active="transform:scale(.94)">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/></svg>
             </button>
           </div>
@@ -437,13 +437,13 @@ class Component extends DCLogic {
   THEME_KEY = 'iqd-calc-theme-v8';
 
   DENOMS = [
-    { value: 250,    name: '250',    label: 'مئتان وخمسون',     base: '#00C7BE', dark: '#00897B' },
-    { value: 500,    name: '500',    label: 'خمسمئة',           base: '#30B0C7', dark: '#0277BD' },
-    { value: 1000,   name: '1,000',  label: 'ألف',               base: '#007AFF', dark: '#0040DD' },
-    { value: 5000,   name: '5,000',  label: 'خمسة آلاف',         base: '#5856D6', dark: '#3F3DB3' },
-    { value: 10000,  name: '10,000', label: 'عشرة آلاف',         base: '#AF52DE', dark: '#7B2EAD' },
-    { value: 25000,  name: '25,000', label: 'خمسة وعشرون ألف',   base: '#FF9500', dark: '#D97700' },
-    { value: 50000,  name: '50,000', label: 'خمسون ألف',         base: '#FF3B30', dark: '#C8201A' },
+    { value: 250,    name: '250',    label: 'مئتان وخمسون',     base: '#2DD4BF', light: '#99F6E4', vivid: '#14B8A6' },
+    { value: 500,    name: '500',    label: 'خمسمئة',           base: '#38BDF8', light: '#BAE6FD', vivid: '#0EA5E9' },
+    { value: 1000,   name: '1,000',  label: 'ألف',               base: '#3B82F6', light: '#BFDBFE', vivid: '#2563EB' },
+    { value: 5000,   name: '5,000',  label: 'خمسة آلاف',         base: '#818CF8', light: '#C7D2FE', vivid: '#6366F1' },
+    { value: 10000,  name: '10,000', label: 'عشرة آلاف',         base: '#C084FC', light: '#E9D5FF', vivid: '#A855F7' },
+    { value: 25000,  name: '25,000', label: 'خمسة وعشرون ألف',   base: '#FB923C', light: '#FED7AA', vivid: '#F97316' },
+    { value: 50000,  name: '50,000', label: 'خمسون ألف',         base: '#F87171', light: '#FECACA', vivid: '#EF4444' },
   ];
 
   state = { counts: {}, lastUpdatedAt: null, theme: 'auto', systemDark: false };
@@ -461,8 +461,8 @@ class Component extends DCLogic {
       if (Object.keys(next).length) this.setState(next);
     } catch(e){}
 
-    let theme = 'auto';
-    try { theme = localStorage.getItem(this.THEME_KEY) || localStorage.getItem('iqd-calc-theme-v7') || 'auto'; } catch(e){}
+    let theme = 'light';
+    try { theme = localStorage.getItem(this.THEME_KEY) || localStorage.getItem('iqd-calc-theme-v7') || 'light'; } catch(e){}
     this._mql = window.matchMedia('(prefers-color-scheme: dark)');
     this._onSysChange = () => {
       this.setState({ systemDark: this._mql.matches });
@@ -501,23 +501,23 @@ class Component extends DCLogic {
 
   cardVars(d, count, isDark) {
     const accent = d.base;
-    const accentDark = d.dark;
-    const accentMid = this.lighten(accent, 0.15);
+    const accentLight = d.light || this.lighten(accent, 0.4);
+    const accentVivid = d.vivid || d.base;
     const subtotal = d.value * count;
     return {
-      accent, accentMid, accentDark,
-      accentSoft: this.hexA(accent, isDark ? 0.45 : 0.3),
-      accentBorder: count > 0 ? this.hexA(accent, isDark ? 0.55 : 0.4) : 'var(--glass-border)',
-      cardBg: isDark ? 'rgba(255,255,255,.04)' : 'rgba(255,255,255,.72)',
-      cardBorder: count > 0 ? `0.5px solid ${this.hexA(accent, isDark ? 0.5 : 0.35)}` : '0.5px solid var(--glass-border)',
-      cardShadow: count > 0 ? `0 20px 50px -20px ${this.hexA(accent, isDark ? 0.5 : 0.25)}, var(--glass-shadow)` : 'var(--glass-shadow)',
-      specularOpacity: isDark ? 0.35 : 0.6,
+      accent, accentLight, accentVivid,
+      accentSoft: this.hexA(accent, isDark ? 0.5 : 0.35),
+      accentBorder: count > 0 ? this.hexA(accent, isDark ? 0.65 : 0.5) : 'var(--glass-border)',
+      cardBg: isDark ? 'rgba(255,255,255,.1)' : '#FFFFFF',
+      cardBorder: count > 0 ? `1.5px solid ${this.hexA(accent, isDark ? 0.6 : 0.45)}` : '1px solid var(--glass-border)',
+      cardShadow: count > 0 ? `0 12px 36px -10px ${this.hexA(accent, isDark ? 0.55 : 0.35)}, var(--glass-shadow)` : 'var(--glass-shadow)',
+      specularOpacity: isDark ? 0.5 : 0.85,
       isActive: count > 0,
       subtotalDisplay: this.fmt(subtotal),
-      subtotalBg: count > 0 ? this.hexA(accent, isDark ? 0.14 : 0.08) : (isDark ? 'rgba(255,255,255,.04)' : 'rgba(0,0,0,.03)'),
-      subtotalBorder: count > 0 ? this.hexA(accent, isDark ? 0.35 : 0.2) : 'var(--glass-border)',
-      subtotalColor: count > 0 ? accent : 'var(--label-3)',
-      subtotalLabel: count > 0 ? this.hexA(accent, 0.9) : 'var(--label-3)',
+      subtotalBg: count > 0 ? this.hexA(accent, isDark ? 0.22 : 0.12) : (isDark ? 'rgba(255,255,255,.08)' : 'rgba(0,0,0,.03)'),
+      subtotalBorder: count > 0 ? this.hexA(accent, isDark ? 0.45 : 0.28) : 'var(--glass-border)',
+      subtotalColor: count > 0 ? accentVivid : 'var(--label-3)',
+      subtotalLabel: count > 0 ? accent : 'var(--label-2)',
       quickAdds: [10, 25, 50, 100].map(q => ({
         label: q,
         onClick: () => this.setCount(d.value, count + q),
@@ -631,8 +631,8 @@ class Component extends DCLogic {
         const pct = total > 0 ? (amount / total) * 100 : 0;
         return {
           color: d.base,
-          colorDark: d.dark,
-          glow: this.hexA(d.base, 0.5),
+          colorDark: d.vivid || d.base,
+          glow: this.hexA(d.base, 0.65),
           pct: pct.toFixed(2),
           pctLabel: `${pct.toFixed(1)}%`,
           label: d.name,
@@ -665,7 +665,7 @@ class Component extends DCLogic {
       topSegLabel: top ? `${top.label} د.ع` : '—',
       topSegPct: top ? top.pctLabel : '—',
       lastUpdated: this.relativeTime(this.state.lastUpdatedAt),
-      greenSoft: isDark ? 'rgba(48,209,88,.22)' : 'rgba(52,199,89,.18)',
+      greenSoft: isDark ? 'rgba(74,224,106,.28)' : 'rgba(52,199,89,.22)',
 
       isAuto: theme === 'auto', isLight: theme === 'light', isDark: theme === 'dark',
       autoBg: a.bg, autoColor: a.color, autoShadow: a.shadow,
