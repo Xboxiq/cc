@@ -148,6 +148,32 @@
   @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.8);opacity:0}}
   @keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
   @keyframes glowPulse{0%,100%{opacity:.6}50%{opacity:1}}
+
+  /* حقوق Dev — حركات مميزة */
+  @keyframes creditEnter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes creditShine{0%{background-position:200% center}100%{background-position:-200% center}}
+  @keyframes creditDot{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(0,122,255,.45)}50%{transform:scale(1.15);box-shadow:0 0 12px 3px rgba(88,86,214,.55)}}
+  @keyframes creditWink{0%,88%,100%{transform:rotate(0deg) scale(1)}92%{transform:rotate(-8deg) scale(1.12)}96%{transform:rotate(6deg) scale(1.08)}}
+  @keyframes creditBarGlow{0%,100%{border-color:var(--glass-border);box-shadow:var(--glass-shadow)}50%{border-color:rgba(0,122,255,.22);box-shadow:0 4px 28px -6px rgba(88,86,214,.18),var(--glass-shadow)}}
+
+  .credit-bar{
+    animation:creditEnter .7s var(--ease-out) .2s both,creditBarGlow 4s ease-in-out 1s infinite;
+    transition:transform .35s var(--ease-out);
+  }
+  .credit-bar:hover{transform:translateY(-2px)}
+  .credit-dot{
+    display:inline-block;width:8px;height:8px;border-radius:50%;
+    background:linear-gradient(135deg,var(--c-blue),var(--c-purple));
+    animation:creditDot 2.4s ease-in-out infinite;
+  }
+  .credit-name{
+    background:linear-gradient(90deg,var(--c-blue),var(--c-indigo),var(--c-purple),var(--c-blue));
+    background-size:300% 100%;
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    animation:creditShine 5s linear infinite;
+  }
+  .credit-wink{display:inline-block;animation:creditWink 3.5s ease-in-out infinite}
+
   .stagger>*{opacity:0;animation:slideUp .5s var(--ease-out) forwards}
   .stagger>*:nth-child(1){animation-delay:.05s}
   .stagger>*:nth-child(2){animation-delay:.10s}
@@ -159,6 +185,7 @@
 
   @media (prefers-reduced-motion:reduce){
     .stagger>*{opacity:1;animation:none}
+    .credit-bar,.credit-dot,.credit-name,.credit-wink{animation:none!important}
     *{transition-duration:.01ms!important}
   }
   @media (max-width:520px){
@@ -424,13 +451,13 @@
   </sc-if>
 
   <footer style="margin-top:48px;padding:0 4px">
-    <div style="display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 20px;border-radius:16px;background:var(--surface);border:.5px solid var(--glass-border);box-shadow:var(--glass-shadow);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
-      <span style="width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--c-blue),var(--c-purple));flex-shrink:0"></span>
+    <div class="credit-bar" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 20px;border-radius:16px;background:var(--surface);border:.5px solid var(--glass-border);box-shadow:var(--glass-shadow);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
+      <span class="credit-dot" style="flex-shrink:0"></span>
       <span class="ar" style="font-size:13px;font-weight:600;color:var(--label-2);letter-spacing:.01em">بغداد، العراق</span>
       <span style="width:1px;height:16px;background:var(--separator);flex-shrink:0"></span>
       <span style="font-size:13px;font-weight:700;color:var(--label);letter-spacing:-.01em;font-family:-apple-system,'SF Pro Display',system-ui,sans-serif">
-        Dev <span style="background:linear-gradient(135deg,var(--c-blue),var(--c-indigo),var(--c-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Hussien Ali</span>
-        <span style="font-size:14px;margin-right:2px">:')</span>
+        Dev <span class="credit-name">Hussien Ali</span>
+        <span class="credit-wink" style="font-size:14px;margin-right:2px">:')</span>
       </span>
     </div>
   </footer>
