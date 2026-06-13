@@ -182,77 +182,112 @@
   .stagger>*:nth-child(5){animation-delay:.25s}
   .stagger>*:nth-child(6){animation-delay:.30s}
   .stagger>*:nth-child(7){animation-delay:.35s}
-  .stagger>*:nth-child(8){animation-delay:.40s}
 
   @media (prefers-reduced-motion:reduce){
     .stagger>*{opacity:1;animation:none}
     .credit-bar,.credit-dot,.credit-name,.credit-wink{animation:none!important}
     *{transition-duration:.01ms!important}
   }
-  @media (max-width:520px){
-    .denom-board{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-    .note-card{grid-template-columns:5px 1fr!important}
-    .wallet-stats{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+
+  /* ─── التخطيط النهائي: محفظة + بطاقات كبيرة ─── */
+  .app-shell{max-width:1360px;margin:0 auto;padding:18px 16px 72px}
+  .app-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+  .app-header-main{min-width:0}
+  .app-header h1{font-size:clamp(26px,4.5vw,34px);font-weight:800;letter-spacing:-.024em;line-height:1.05}
+  .app-header p{font-size:14px;color:var(--label-2);margin-top:4px;line-height:1.4}
+  .app-stage{display:grid;grid-template-columns:minmax(280px,340px) minmax(0,1fr);gap:18px;align-items:start}
+  .wallet-panel{position:sticky;top:14px;border-radius:24px;overflow:hidden;box-shadow:var(--glass-shadow-lg)}
+  .wallet-panel-body{position:relative;padding:24px 22px 20px;background:var(--hero-bg);color:#fff}
+  .wallet-total{font-size:clamp(36px,5vw,52px);font-weight:700;line-height:.95;letter-spacing:-.032em}
+  .wallet-words{margin-top:10px;font-size:13px;line-height:1.5;color:rgba(255,255,255,.6);font-weight:500}
+  .wallet-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}
+  .wallet-metric{padding:10px 8px;border-radius:12px;background:rgba(255,255,255,.07);border:.5px solid rgba(255,255,255,.1);text-align:center}
+  .wallet-metric-label{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.42)}
+  .wallet-metric-val{font-size:20px;font-weight:700;margin-top:4px;line-height:1}
+  .wallet-dist{margin-top:16px}
+  .wallet-dist-bar{display:flex;height:10px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.07);gap:2px}
+  .wallet-dist-legend{display:flex;flex-wrap:wrap;gap:8px 12px;margin-top:10px}
+  .notes-stage{min-width:0}
+  .notes-stage-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px;padding:0 2px}
+  .notes-stage-head h2{font-size:clamp(20px,3vw,26px);font-weight:800;letter-spacing:-.018em}
+  .notes-stage-head span{font-size:13px;color:var(--label-3);font-weight:500}
+  .notes-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  @media (max-width:1080px){
+    .app-stage{grid-template-columns:1fr}
+    .wallet-panel{position:static}
+  }
+  @media (max-width:640px){
+    .notes-grid{grid-template-columns:1fr}
+    .app-header{align-items:flex-start}
   }
 
-  .page-main{display:flex;flex-direction:column;gap:14px}
-  .denom-board{
-    display:grid;
-    grid-template-columns:repeat(7,minmax(0,1fr));
-    gap:10px;
-  }
-  @media (max-width:1180px){
-    .denom-board{grid-template-columns:repeat(4,minmax(0,1fr))}
-  }
-  @media (max-width:760px){
-    .denom-board{grid-template-columns:repeat(2,minmax(0,1fr))}
-  }
-
-  /* بطاقة ورقة نقدية — مضغوطة وواضحة */
-  .note-card{
-    display:grid;grid-template-columns:5px 1fr;
-    border-radius:16px;overflow:hidden;
+  /* بطاقة ورقة عراقية — كبيرة وواضحة */
+  .iqd-note{
+    border-radius:22px;overflow:hidden;
     background:var(--surface);
     border:.5px solid var(--glass-border);
     box-shadow:var(--glass-shadow);
-    transition:box-shadow .3s var(--ease-out),transform .3s var(--ease-out);
-    min-height:0;
+    transition:box-shadow .35s var(--ease-out),transform .35s var(--ease-out);
   }
-  .note-card-active{box-shadow:0 6px 24px -6px var(--note-glow),var(--glass-shadow)}
-  .note-body{padding:12px 14px 14px}
-  .note-stripe{min-height:100%}
-  .note-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px}
-  .note-value{font-size:clamp(20px,2.2vw,26px);font-weight:800;letter-spacing:-.03em;line-height:1}
-  .note-label{font-size:11px;font-weight:600;color:var(--label-2);margin-top:2px}
-  .note-badge{font-size:10px;font-weight:700;padding:4px 8px;border-radius:999px;white-space:nowrap}
-  .note-stepper{display:grid;grid-template-columns:36px 1fr 36px;gap:6px}
-  .note-sub{margin-top:10px;padding:8px 10px;border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-  .note-quick{display:flex;gap:4px;margin-top:8px}
-  .note-quick button{flex:1;height:28px;border-radius:7px;background:var(--press-bg);color:var(--label-2);font-size:11px;font-weight:700}
-  .denom-head{padding:4px 4px 2px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .denom-head h2{font-size:clamp(20px,3.5vw,24px);font-weight:800;color:var(--label);letter-spacing:-.018em}
-  .wallet-compact{position:relative;border-radius:22px;overflow:hidden;box-shadow:var(--glass-shadow-lg)}
-  .wallet-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+  .iqd-note-active{box-shadow:0 18px 50px -14px var(--note-glow),var(--glass-shadow)}
+  .iqd-note-face{
+    position:relative;height:130px;padding:16px 18px;overflow:hidden;color:#fff;
+  }
+  .iqd-note-face::before{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(255,255,255,.24) 0%,rgba(255,255,255,.04) 38%,transparent 62%);
+    pointer-events:none;
+  }
+  .iqd-note-face::after{
+    content:'';position:absolute;top:-30%;right:-15%;width:65%;height:130%;
+    border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 68%);
+    filter:blur(18px);pointer-events:none;
+  }
+  .iqd-note-watermark{
+    position:absolute;top:50%;left:0;transform:translateY(-50%);
+    font-size:clamp(68px,11vw,100px);font-weight:900;
+    color:rgba(255,255,255,.13);letter-spacing:-.06em;line-height:1;pointer-events:none;
+  }
+  .iqd-note-top{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .iqd-note-currency{
+    font-size:11px;font-weight:800;letter-spacing:.1em;
+    padding:5px 10px;border-radius:8px;
+    background:rgba(255,255,255,.16);border:.5px solid rgba(255,255,255,.28);
+  }
+  .iqd-note-count{
+    font-size:12px;font-weight:800;padding:5px 11px;border-radius:999px;
+    background:rgba(255,255,255,.18);border:.5px solid rgba(255,255,255,.28);
+  }
+  .iqd-note-value{position:relative;font-size:clamp(30px,4.5vw,38px);font-weight:800;letter-spacing:-.03em;line-height:1;margin-top:14px}
+  .iqd-note-meta{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+  .iqd-note-label{font-size:13px;font-weight:700;color:rgba(255,255,255,.9)}
+  .iqd-note-hint{font-size:11px;font-weight:600;color:rgba(255,255,255,.55)}
+  .iqd-note-body{padding:16px 18px 18px;background:var(--surface)}
+  .iqd-stepper{display:grid;grid-template-columns:48px 1fr 48px;gap:8px}
+  .iqd-quick{display:flex;gap:6px;margin-top:10px}
+  .iqd-quick button{flex:1;height:32px;border-radius:9px;background:var(--press-bg);color:var(--label-2);font-size:12px;font-weight:700}
+  .iqd-sub{
+    margin-top:12px;padding:12px 14px;border-radius:13px;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+  }
 </style>
 </helmet>
 
-<div style="max-width:1280px;margin:0 auto;padding:20px 16px 80px" class="page-main">
+<div class="app-shell">
 
-  <!-- ─── Header ─── -->
-  <header style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:4px">
-    <div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+  <header class="app-header">
+    <div class="app-header-main">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
         <span style="width:7px;height:7px;border-radius:50%;background:var(--c-green);box-shadow:0 0 0 4px {{ greenSoft }};position:relative">
           <span style="position:absolute;inset:0;border-radius:50%;background:var(--c-green);animation:pulse 2.5s infinite"></span>
         </span>
-        <span class="ar" style="font-size:12px;font-weight:600;color:var(--label-2);letter-spacing:.02em">محفوظ تلقائياً</span>
+        <span class="ar" style="font-size:11px;font-weight:600;color:var(--label-2)">محفوظ تلقائياً</span>
       </div>
-      <h1 class="ar" style="font-size:clamp(32px,6vw,42px);font-weight:800;color:var(--label);letter-spacing:-.028em;line-height:1.05">حاسبة الدينار</h1>
-      <p class="ar" style="font-size:16px;font-weight:400;color:var(--label-2);margin-top:6px;line-height:1.45">احسب مجموع محفظتك النقدية</p>
+      <h1 class="ar">حاسبة الدينار العراقي</h1>
+      <p class="ar">كل الفئات أمامك — أدخل الأعداد واحسب مجموع محفظتك</p>
     </div>
 
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
-      <!-- Theme toggle -->
       <div role="radiogroup" aria-label="السمة" class="glass" style="display:flex;align-items:stretch;border-radius:13px;padding:3px;gap:0;height:38px">
         <button onClick="{{ onAuto }}" aria-checked="{{ isAuto }}" role="radio" class="ar" style="display:flex;align-items:center;gap:5px;padding:0 13px;border-radius:10px;font-size:12px;font-weight:600;color:{{ autoColor }};background:{{ autoBg }};box-shadow:{{ autoShadow }};transition:all .25s var(--ease-out);height:32px" style-hover="opacity:.85">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 3v18" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor"/></svg>
@@ -265,7 +300,6 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </div>
-
       <button onClick="{{ onReset }}" class="ar glass" style="display:inline-flex;align-items:center;gap:6px;padding:0 16px;height:38px;border-radius:13px;color:{{ resetColor }};font-weight:600;font-size:13px;transition:all .2s;border-color:{{ resetBorder }}" style-hover="opacity:.85">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         تصفير
@@ -273,190 +307,131 @@
     </div>
   </header>
 
-  <!-- ─── الفئات — كلها ظاهرة مباشرة ─── -->
-  <div class="denom-head ar">
-    <div style="display:flex;align-items:center;gap:10px">
-      <h2>الفئات النقدية</h2>
-      <span class="num glass" style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 9px;border-radius:999px;color:var(--label-2);font-size:12px;font-weight:700">7</span>
-    </div>
-    <span style="font-size:13px;font-weight:500;color:var(--label-3)">من 250 إلى 50,000 د.ع</span>
-  </div>
+  <div class="app-stage">
 
-  <section class="stagger denom-board">
-    <sc-for list="{{ denominations }}" as="d" hint-placeholder-count="7">
-      <div class="note-card {{ d.cardClass }}" style="--note-glow:{{ d.accentSoft }};border-color:{{ d.borderColor }}">
-        <div class="note-stripe" style="background:linear-gradient(180deg,{{ d.accentLight }} 0%,{{ d.accent }} 55%,{{ d.accentDark }} 100%)"></div>
-        <div class="note-body" style="background:{{ d.bodyBg }}">
-          <div class="note-head">
-            <div>
-              <div class="num note-value" style="color:{{ d.valueColor }}">{{ d.name }}</div>
-              <div class="ar note-label">{{ d.label }}</div>
+    <!-- المحفظة — ثابتة على الجانب -->
+    <aside class="wallet-panel">
+      <div style="height:3px;background:linear-gradient(90deg,var(--c-orange),var(--c-yellow),var(--c-mint),var(--c-indigo),var(--c-orange));background-size:200% 100%;animation:glowPulse 4s ease infinite"></div>
+      <div class="wallet-panel-body">
+        <div style="position:absolute;top:-70px;left:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,var(--hero-glow-1),transparent 58%);filter:blur(36px);pointer-events:none"></div>
+        <div style="position:absolute;bottom:-80px;right:-50px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,var(--hero-glow-2),transparent 58%);filter:blur(38px);pointer-events:none"></div>
+
+        <div style="position:relative">
+          <div class="ar" style="font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">المحفظة النقدية</div>
+          <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+            <div class="num wallet-total">{{ totalDisplay }}</div>
+            <div class="ar" style="font-size:18px;font-weight:600;color:rgba(255,255,255,.5)">د.ع</div>
+          </div>
+          <div class="ar wallet-words">{{ totalInWords }}</div>
+
+          <div class="wallet-metrics">
+            <div class="wallet-metric">
+              <div class="wallet-metric-label">الأوراق</div>
+              <div class="num wallet-metric-val">{{ totalPiecesDisplay }}</div>
             </div>
-            <sc-if value="{{ d.isActive }}" hint-placeholder-val="{{ false }}">
-              <span class="num note-badge ar" style="background:{{ d.badgeBg }};color:{{ d.accent }}">{{ d.count }}</span>
+            <div class="wallet-metric">
+              <div class="wallet-metric-label">الفئات</div>
+              <div class="num wallet-metric-val">{{ activeCountDisplay }}<span style="font-size:14px;color:rgba(255,255,255,.35)">/7</span></div>
+            </div>
+            <div class="wallet-metric">
+              <div class="wallet-metric-label">المتوسط</div>
+              <div class="num wallet-metric-val">{{ avgValueDisplay }}</div>
+            </div>
+          </div>
+
+          <div class="wallet-dist">
+            <sc-if value="{{ hasAny }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <div class="wallet-dist-bar">
+                  <sc-for list="{{ segments }}" as="s" hint-placeholder-count="3">
+                    <div style="height:100%;flex-basis:{{ s.pct }}%;background:linear-gradient(180deg,{{ s.color }},{{ s.colorDark }});transition:flex-basis .6s var(--ease-out)" title="{{ s.label }}"></div>
+                  </sc-for>
+                </div>
+                <div class="wallet-dist-legend">
+                  <sc-for list="{{ segments }}" as="s" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:5px">
+                      <span style="width:7px;height:7px;border-radius:50%;background:{{ s.color }}"></span>
+                      <span class="num" style="font-size:11px;font-weight:700;color:#fff">{{ s.label }}</span>
+                      <span class="num" style="font-size:11px;color:rgba(255,255,255,.42)">{{ s.pctLabel }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+              <div class="wallet-dist-bar" style="opacity:.5"></div>
+              <div class="ar" style="font-size:12px;color:rgba(255,255,255,.45);margin-top:8px">ابدأ بإدخال الأعداد من البطاقات</div>
             </sc-if>
           </div>
 
-          <div class="note-stepper">
-            <button onClick="{{ d.onDec }}" onMouseDown="{{ d.onHoldDec }}" onMouseUp="{{ d.onHoldEnd }}" onMouseLeave="{{ d.onHoldEnd }}" style="height:40px;border-radius:10px;background:var(--press-bg);display:grid;place-items:center;color:var(--label)" style-active="transform:scale(.94)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
-            </button>
-            <input type="number" min="0" max="99999" value="{{ d.count }}" onInput="{{ d.onInput }}" onFocus="{{ d.onFocus }}" placeholder="0" class="num" style="height:40px;border:none;border-radius:10px;background:var(--press-bg);text-align:center;font-size:18px;font-weight:700;color:var(--label);outline:none;width:100%" style-focus="box-shadow:0 0 0 2px {{ d.accent }}">
-            <button onClick="{{ d.onInc }}" onMouseDown="{{ d.onHoldInc }}" onMouseUp="{{ d.onHoldEnd }}" onMouseLeave="{{ d.onHoldEnd }}" style="height:40px;border-radius:10px;background:{{ d.accent }};color:#fff;display:grid;place-items:center;box-shadow:0 3px 10px -3px {{ d.accentSoft }}" style-active="transform:scale(.94)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
-            </button>
-          </div>
-
-          <div class="note-quick">
-            <sc-for list="{{ d.quickAdds }}" as="q" hint-placeholder-count="4">
-              <button onClick="{{ q.onClick }}" class="num">+{{ q.label }}</button>
-            </sc-for>
-          </div>
-
-          <div class="note-sub" style="background:{{ d.subtotalBg }};border:.5px solid {{ d.subtotalBorder }}">
-            <span class="ar" style="font-size:11px;font-weight:600;color:var(--label-2)">المجموع</span>
-            <span class="num" style="font-size:14px;font-weight:700;color:{{ d.subtotalColor }}">{{ d.subtotalDisplay }}</span>
-          </div>
-        </div>
-      </div>
-    </sc-for>
-  </section>
-
-  <!-- ─── ملخص المحفظة (مضغوط) ─── -->
-  <section class="wallet-compact">
-    <div style="height:2px;background:linear-gradient(90deg,var(--c-orange),var(--c-yellow),var(--c-mint),var(--c-indigo),var(--c-orange));background-size:200% 100%;animation:glowPulse 4s ease infinite"></div>
-    <div style="position:relative;padding:22px 24px 20px;background:var(--hero-bg);color:#fff">
-      <div style="position:absolute;top:-80px;left:-50px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,var(--hero-glow-1),transparent 58%);filter:blur(40px);pointer-events:none"></div>
-      <div style="position:absolute;bottom:-90px;right:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,var(--hero-glow-2),transparent 58%);filter:blur(42px);pointer-events:none"></div>
-
-      <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
-        <div style="min-width:0;flex:1 1 280px">
-          <div class="ar" style="font-size:12px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:.04em;margin-bottom:6px">إجمالي المحفظة</div>
-          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
-            <div class="num" style="font-size:clamp(40px,7vw,64px);font-weight:700;line-height:.92;color:#fff;letter-spacing:-.034em">{{ totalDisplay }}</div>
-            <div class="ar" style="font-size:20px;font-weight:600;color:rgba(255,255,255,.5)">دينار</div>
-          </div>
-          <div class="ar" style="margin-top:8px;font-size:13px;color:rgba(255,255,255,.58);font-weight:500;line-height:1.45">{{ totalInWords }}</div>
-        </div>
-        <div class="wallet-stats" style="flex:1 1 320px;padding-top:4px;border-top:.5px solid rgba(255,255,255,.1)">
-          <div style="padding:8px 14px 0 0">
-            <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase">الأوراق</div>
-            <div class="num" style="font-size:22px;font-weight:700;color:#fff;margin-top:3px;line-height:1">{{ totalPiecesDisplay }}</div>
-          </div>
-          <div style="padding:8px 14px;border-right:.5px solid rgba(255,255,255,.1)">
-            <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase">الفئات</div>
-            <div class="num" style="font-size:22px;font-weight:700;color:#fff;margin-top:3px;line-height:1">{{ activeCountDisplay }}<span style="color:rgba(255,255,255,.28);font-size:16px">/7</span></div>
-          </div>
-          <div style="padding:8px 14px;border-right:.5px solid rgba(255,255,255,.1)">
-            <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.14em;text-transform:uppercase">المتوسط</div>
-            <div class="num" style="font-size:22px;font-weight:700;color:#fff;margin-top:3px;line-height:1">{{ avgValueDisplay }}</div>
-          </div>
-        </div>
-      </div>
-
-      <div style="position:relative;margin-top:16px">
-        <sc-if value="{{ hasAny }}" hint-placeholder-val="{{ true }}">
-          <div>
-            <div style="display:flex;height:8px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.06);gap:2px">
-              <sc-for list="{{ segments }}" as="s" hint-placeholder-count="3">
-                <div style="height:100%;flex-basis:{{ s.pct }}%;background:linear-gradient(180deg,{{ s.color }},{{ s.colorDark }});transition:flex-basis .6s var(--ease-out)" title="{{ s.label }}"></div>
-              </sc-for>
+          <sc-if value="{{ hasAny }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-top:14px;padding-top:14px;border-top:.5px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <div class="ar" style="font-size:12px;color:rgba(255,255,255,.5)">أعلى فئة: <strong style="color:#fff;font-weight:700">{{ topSegLabel }}</strong></div>
+              <div class="num" style="font-size:12px;font-weight:600;color:rgba(255,255,255,.45)">{{ lastUpdated }}</div>
             </div>
-            <div style="display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:10px">
-              <sc-for list="{{ segments }}" as="s" hint-placeholder-count="3">
-                <div style="display:flex;align-items:center;gap:6px">
-                  <span style="width:7px;height:7px;border-radius:50%;background:{{ s.color }}"></span>
-                  <span class="num" style="font-size:11px;font-weight:700;color:#fff">{{ s.label }}</span>
-                  <span class="num" style="font-size:11px;font-weight:500;color:rgba(255,255,255,.42)">{{ s.pctLabel }}</span>
+          </sc-if>
+        </div>
+      </div>
+    </aside>
+
+    <!-- كل الفئات — بطاقات كبيرة وواضحة -->
+    <main class="notes-stage">
+      <div class="notes-stage-head ar">
+        <h2>الفئات النقدية</h2>
+        <span>7 فئات · 250 — 50,000 د.ع</span>
+      </div>
+
+      <div class="notes-grid stagger">
+        <sc-for list="{{ denominations }}" as="d" hint-placeholder-count="7">
+          <article class="iqd-note {{ d.cardClass }}" style="--note-glow:{{ d.accentSoft }};border-color:{{ d.borderColor }}">
+            <div class="iqd-note-face" style="background:linear-gradient(145deg,{{ d.accentLight }} 0%,{{ d.accent }} 52%,{{ d.accentDark }} 100%)">
+              <div class="iqd-note-watermark num">{{ d.name }}</div>
+              <div class="iqd-note-top">
+                <span class="iqd-note-currency">دينار عراقي</span>
+                <sc-if value="{{ d.isActive }}" hint-placeholder-val="{{ false }}">
+                  <span class="iqd-note-count">{{ d.count }} ورقة</span>
+                </sc-if>
+              </div>
+              <div class="num iqd-note-value">{{ d.name }}</div>
+              <div class="iqd-note-meta">
+                <span class="iqd-note-label">{{ d.label }}</span>
+                <span class="iqd-note-hint">{{ d.noteHint }}</span>
+              </div>
+            </div>
+
+            <div class="iqd-note-body">
+              <div class="iqd-stepper">
+                <button onClick="{{ d.onDec }}" onMouseDown="{{ d.onHoldDec }}" onMouseUp="{{ d.onHoldEnd }}" onMouseLeave="{{ d.onHoldEnd }}" style="height:50px;border-radius:13px;background:var(--press-bg);display:grid;place-items:center;color:var(--label);border:.5px solid var(--glass-border)" style-active="transform:scale(.94)">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+                </button>
+                <input type="number" min="0" max="99999" value="{{ d.count }}" onInput="{{ d.onInput }}" onFocus="{{ d.onFocus }}" placeholder="0" class="num" style="height:50px;border:.5px solid var(--glass-border);border-radius:13px;background:var(--glass-bg-strong);text-align:center;font-size:22px;font-weight:800;color:var(--label);outline:none;width:100%" style-focus="box-shadow:0 0 0 2px {{ d.accent }}">
+                <button onClick="{{ d.onInc }}" onMouseDown="{{ d.onHoldInc }}" onMouseUp="{{ d.onHoldEnd }}" onMouseLeave="{{ d.onHoldEnd }}" style="height:50px;border-radius:13px;background:linear-gradient(145deg,{{ d.accent }},{{ d.accentDark }});color:#fff;display:grid;place-items:center;box-shadow:0 6px 18px -6px {{ d.accentSoft }}" style-active="transform:scale(.94)">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+
+              <div class="iqd-quick">
+                <sc-for list="{{ d.quickAdds }}" as="q" hint-placeholder-count="4">
+                  <button onClick="{{ q.onClick }}" class="num">+{{ q.label }}</button>
+                </sc-for>
+              </div>
+
+              <div class="iqd-sub" style="background:{{ d.subtotalBg }};border:.5px solid {{ d.subtotalBorder }}">
+                <span class="ar" style="font-size:13px;font-weight:700;color:{{ d.subtotalLabel }}">المجموع الفرعي</span>
+                <div style="display:flex;align-items:baseline;gap:5px">
+                  <span class="num" style="font-size:20px;font-weight:800;color:{{ d.subtotalColor }}">{{ d.subtotalDisplay }}</span>
+                  <span class="ar" style="font-size:11px;font-weight:700;color:var(--label-3)">د.ع</span>
                 </div>
-              </sc-for>
+              </div>
             </div>
-          </div>
-        </sc-if>
-        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
-          <div style="height:8px;border-radius:999px;background:rgba(255,255,255,.06)"></div>
-          <div class="ar" style="font-size:12px;color:rgba(255,255,255,.45);margin-top:8px">أدخل الأعداد في البطاقات أعلاه</div>
-        </sc-if>
+          </article>
+        </sc-for>
       </div>
-    </div>
-  </section>
+    </main>
 
-  <!-- ─── Insights (glass inset) ─── -->
-  <sc-if value="{{ hasAny }}" hint-placeholder-val="{{ true }}">
-    <div class="section-h" style="padding-top:20px">
-      <h2 class="ar" style="font-size:clamp(22px,4vw,28px);font-weight:800;color:var(--label);letter-spacing:-.018em">رؤى المحفظة</h2>
-      <div class="ar" style="font-size:14px;color:var(--label-3);font-weight:500">تحديث فوري</div>
-    </div>
-    <section class="inset glass-strong">
+  </div>
 
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;min-height:68px">
-        <div style="display:flex;align-items:center;gap:14px">
-          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--c-orange),#FFB340);display:grid;place-items:center;box-shadow:0 4px 12px -4px rgba(255,149,0,.5)">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z" fill="#fff"/></svg>
-          </div>
-          <div>
-            <div class="ar" style="font-size:17px;font-weight:600;color:var(--label);letter-spacing:-.005em">أعلى فئة قيمةً</div>
-            <div class="ar" style="font-size:13px;color:var(--label-2);margin-top:2px">الفئة صاحبة الحصة الأكبر</div>
-          </div>
-        </div>
-        <div style="text-align:left">
-          <div class="num" style="font-size:17px;font-weight:700;color:var(--label)">{{ topSegLabel }}</div>
-          <div class="num" style="font-size:13px;color:var(--label-2);font-weight:500;margin-top:2px">{{ topSegPct }}</div>
-        </div>
-      </div>
-
-      <div style="height:.5px;background:var(--separator);margin-right:76px"></div>
-
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;min-height:68px">
-        <div style="display:flex;align-items:center;gap:14px">
-          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--c-indigo),#8B89FF);display:grid;place-items:center;box-shadow:0 4px 12px -4px rgba(88,86,214,.5)">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12h4l3-9 4 18 3-9h4" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div>
-            <div class="ar" style="font-size:17px;font-weight:600;color:var(--label);letter-spacing:-.005em">إجمالي الأوراق</div>
-            <div class="ar" style="font-size:13px;color:var(--label-2);margin-top:2px">العدد الكلي عبر جميع الفئات</div>
-          </div>
-        </div>
-        <div class="num" style="font-size:17px;font-weight:700;color:var(--label)">{{ totalPiecesDisplay }}</div>
-      </div>
-
-      <div style="height:.5px;background:var(--separator);margin-right:76px"></div>
-
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;min-height:68px">
-        <div style="display:flex;align-items:center;gap:14px">
-          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--c-pink),#FF7A96);display:grid;place-items:center;box-shadow:0 4px 12px -4px rgba(255,45,85,.5)">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 3v18h18" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><path d="M7 16l4-4 3 3 5-6" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <div>
-            <div class="ar" style="font-size:17px;font-weight:600;color:var(--label);letter-spacing:-.005em">متوسط قيمة الورقة</div>
-            <div class="ar" style="font-size:13px;color:var(--label-2);margin-top:2px">الإجمالي ÷ عدد الأوراق</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:baseline;gap:5px">
-          <span class="num" style="font-size:17px;font-weight:700;color:var(--label)">{{ avgValueDisplay }}</span>
-          <span class="ar" style="font-size:13px;color:var(--label-2);font-weight:500">د.ع</span>
-        </div>
-      </div>
-
-      <div style="height:.5px;background:var(--separator);margin-right:76px"></div>
-
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;min-height:68px">
-        <div style="display:flex;align-items:center;gap:14px">
-          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--c-mint),#4DEDE8);display:grid;place-items:center;box-shadow:0 4px 12px -4px rgba(0,199,190,.5)">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="2.4"/><path d="M12 7v5l3 2" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
-          </div>
-          <div>
-            <div class="ar" style="font-size:17px;font-weight:600;color:var(--label);letter-spacing:-.005em">آخر تعديل</div>
-            <div class="ar" style="font-size:13px;color:var(--label-2);margin-top:2px">يُحفظ في هذا الجهاز فقط</div>
-          </div>
-        </div>
-        <div class="ar num" style="font-size:14px;font-weight:600;color:var(--label-2)">{{ lastUpdated }}</div>
-      </div>
-
-    </section>
-  </sc-if>
-
-  <footer style="margin-top:48px;padding:0 4px">
+  <footer style="margin-top:36px;padding:0 4px">
     <div class="credit-bar" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 20px;border-radius:16px;background:var(--surface);border:.5px solid var(--glass-border);box-shadow:var(--glass-shadow);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)">
       <span class="credit-dot" style="flex-shrink:0"></span>
       <span class="ar" style="font-size:13px;font-weight:600;color:var(--label-2);letter-spacing:.01em">بغداد، العراق</span>
@@ -554,7 +529,7 @@ class Component extends DCLogic {
       valueColor: accentDark,
       badgeBg: this.hexA(accent, isDark ? 0.22 : 0.14),
       accentBorder: this.hexA(accent, isDark ? 0.4 : 0.28),
-      cardClass: active ? 'note-card-active' : '',
+      cardClass: active ? 'iqd-note-active' : '',
       borderColor: this.hexA(accent, isDark ? (active ? 0.5 : 0.3) : (active ? 0.38 : 0.22)),
       cardBg: isDark ? 'rgba(255,255,255,.04)' : 'rgba(255,255,255,.72)',
       cardBorder: active ? `0.5px solid ${this.hexA(accent, isDark ? 0.5 : 0.35)}` : '0.5px solid var(--glass-border)',
