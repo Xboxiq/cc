@@ -293,7 +293,7 @@
     <sc-for list="{{ denominations }}" as="d" hint-placeholder-count="7">
       <div style="position:relative;border-radius:26px;overflow:hidden;transition:all .35s cubic-bezier(.16,1,.3,1);background:{{ d.cardBg }};border:{{ d.cardBorder }};box-shadow:{{ d.cardShadow }};backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%)">
         <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);pointer-events:none;z-index:3;opacity:{{ d.specularOpacity }}"></div>
-        <div style="position:relative;height:148px;background:linear-gradient(145deg,{{ d.accent }} 0%,{{ d.accentMid }} 48%,{{ d.accentDark }} 100%);overflow:hidden">
+        <div style="position:relative;height:148px;background:linear-gradient(145deg,{{ d.accentLight }} 0%,{{ d.accent }} 52%,{{ d.accentDark }} 100%);overflow:hidden">
           <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,.06) 38%,transparent 62%);pointer-events:none"></div>
           <div style="position:absolute;top:-40%;right:-20%;width:70%;height:140%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.22),transparent 65%);filter:blur(24px);pointer-events:none"></div>
           <div class="num" style="position:absolute;top:50%;left:8px;transform:translateY(-50%);font-size:clamp(72px,14vw,128px);font-weight:900;color:rgba(255,255,255,.14);letter-spacing:-.06em;line-height:1">{{ d.name }}</div>
@@ -436,14 +436,15 @@ class Component extends DCLogic {
   TS_KEY = 'iqd-calc-ts-v8';
   THEME_KEY = 'iqd-calc-theme-v8';
 
+  /* ألوان الأوراق العراقية الرسمية (سلسلة 2003–الحالية) */
   DENOMS = [
-    { value: 250,    name: '250',    label: 'مئتان وخمسون',     base: '#00C7BE', dark: '#00897B' },
-    { value: 500,    name: '500',    label: 'خمسمئة',           base: '#30B0C7', dark: '#0277BD' },
-    { value: 1000,   name: '1,000',  label: 'ألف',               base: '#007AFF', dark: '#0040DD' },
-    { value: 5000,   name: '5,000',  label: 'خمسة آلاف',         base: '#5856D6', dark: '#3F3DB3' },
-    { value: 10000,  name: '10,000', label: 'عشرة آلاف',         base: '#AF52DE', dark: '#7B2EAD' },
-    { value: 25000,  name: '25,000', label: 'خمسة وعشرون ألف',   base: '#FF9500', dark: '#D97700' },
-    { value: 50000,  name: '50,000', label: 'خمسون ألف',         base: '#FF3B30', dark: '#C8201A' },
+    { value: 250,    name: '250',    label: 'مئتان وخمسون',     light: '#6EB5E8', base: '#3B82C4', dark: '#1E5A96' }, // أزرق
+    { value: 500,    name: '500',    label: 'خمسمئة',           light: '#5EC4BC', base: '#2E9E94', dark: '#1A6B63' }, // أزرق-أخضر
+    { value: 1000,   name: '1,000',  label: 'ألف',               light: '#D4B896', base: '#A67C52', dark: '#6B4A2E' }, // بني
+    { value: 5000,   name: '5,000',  label: 'خمسة آلاف',         light: '#6B8FD4', base: '#3D5A9E', dark: '#243866' }, // أزرق غامق
+    { value: 10000,  name: '10,000', label: 'عشرة آلاف',         light: '#5DB87A', base: '#2E8B4E', dark: '#1A5C34' }, // أخضر
+    { value: 25000,  name: '25,000', label: 'خمسة وعشرون ألف',   light: '#E89090', base: '#C43C3C', dark: '#8B2424' }, // أحمر
+    { value: 50000,  name: '50,000', label: 'خمسون ألف',         light: '#C9A0B8', base: '#8B5A78', dark: '#5C3A4E' }, // وردي-بنفسجي
   ];
 
   state = { counts: {}, lastUpdatedAt: null, theme: 'auto', systemDark: false };
@@ -501,11 +502,11 @@ class Component extends DCLogic {
 
   cardVars(d, count, isDark) {
     const accent = d.base;
+    const accentLight = d.light;
     const accentDark = d.dark;
-    const accentMid = this.lighten(accent, 0.15);
     const subtotal = d.value * count;
     return {
-      accent, accentMid, accentDark,
+      accent, accentLight, accentDark,
       accentSoft: this.hexA(accent, isDark ? 0.45 : 0.3),
       accentBorder: count > 0 ? this.hexA(accent, isDark ? 0.55 : 0.4) : 'var(--glass-border)',
       cardBg: isDark ? 'rgba(255,255,255,.04)' : 'rgba(255,255,255,.72)',
@@ -630,9 +631,9 @@ class Component extends DCLogic {
         const amount = d.value * d.count;
         const pct = total > 0 ? (amount / total) * 100 : 0;
         return {
-          color: d.base,
+          color: d.light,
           colorDark: d.dark,
-          glow: this.hexA(d.base, 0.5),
+          glow: this.hexA(d.base, 0.4),
           pct: pct.toFixed(2),
           pctLabel: `${pct.toFixed(1)}%`,
           label: d.name,
